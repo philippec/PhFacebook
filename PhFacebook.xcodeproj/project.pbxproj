@@ -211,7 +211,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = private/PhFacebook_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = "@rpath";
 				PRODUCT_NAME = PhFacebook;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -229,7 +229,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = private/PhFacebook_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				INSTALL_PATH = "@rpath";
 				PRODUCT_NAME = PhFacebook;
 				WRAPPER_EXTENSION = framework;
 			};

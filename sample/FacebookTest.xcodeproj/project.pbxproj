@@ -312,6 +312,7 @@
 				GCC_PREFIX_HEADER = FacebookTest_Prefix.pch;
 				INFOPLIST_FILE = "FacebookTest-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				PRODUCT_NAME = FacebookTest;
 			};
 			name = Debug;
@@ -329,6 +330,7 @@
 				GCC_PREFIX_HEADER = FacebookTest_Prefix.pch;
 				INFOPLIST_FILE = "FacebookTest-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				PRODUCT_NAME = FacebookTest;
 			};
 			name = Release;

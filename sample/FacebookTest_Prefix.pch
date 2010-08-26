@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'FacebookTest' target in the 'FacebookTest' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif

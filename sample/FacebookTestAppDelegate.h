@@ -7,9 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <PhFacebook/PhFacebook.h>
 
 @interface FacebookTestAppDelegate : NSObject <NSApplicationDelegate>
 {
+    PhFacebook *fb;
     NSWindow *window;
 }
 

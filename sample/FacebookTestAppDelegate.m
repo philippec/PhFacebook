@@ -14,7 +14,7 @@
 
 - (void) applicationDidFinishLaunching: (NSNotification*) aNotification 
 {
-    // Insert code here to initialize your application 
+    fb = [[PhFacebook alloc] init];
 }
 
 @end

@@ -12,8 +12,15 @@
 @interface PhFacebook : NSObject 
 {
     NSString *_appID;
+    id _delegate;
 }
 
-- (id) initWithApplicationID: (const NSString*) appID;
+- (id) initWithApplicationID: (const NSString*) appID delegate: (id) delegate;
+
+@end
+
+@protocol PhFacebookDelegate
+
+- (void) validToken: (PhFacebook*) fbObject;
 
 @end

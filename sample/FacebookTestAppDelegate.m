@@ -11,11 +11,26 @@
 
 @implementation FacebookTestAppDelegate
 
+@synthesize token_label;
 @synthesize window;
 
 - (void) applicationDidFinishLaunching: (NSNotification*) aNotification 
 {
-    fb = [[PhFacebook alloc] initWithApplicationID: APPLICATION_ID];
+    fb = [[PhFacebook alloc] initWithApplicationID: APPLICATION_ID delegate: self];
+}
+
+#pragma mark IBActions
+
+- (IBAction) getAccessToken: (id) sender
+{
+    NSLog(@"Getting access token...");
+}
+
+#pragma mark PhFacebookDelegate methods
+
+- (void) validToken: (PhFacebook*) fbObject
+{
+    NSLog(@"Received valid token for %@", fb);
 }
 
 @end

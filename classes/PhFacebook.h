@@ -11,6 +11,9 @@
 
 @interface PhFacebook : NSObject 
 {
+    NSString *_appID;
 }
+
+- (id) initWithApplicationID: (const NSString*) appID;
 
 @end

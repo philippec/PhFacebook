@@ -7,6 +7,7 @@
 //
 
 #import "FacebookTestAppDelegate.h"
+#import "ApplicationID.h"
 
 @implementation FacebookTestAppDelegate
 
@@ -14,7 +15,7 @@
 
 - (void) applicationDidFinishLaunching: (NSNotification*) aNotification 
 {
-    fb = [[PhFacebook alloc] init];
+    fb = [[PhFacebook alloc] initWithApplicationID: APPLICATION_ID];
 }
 
 @end

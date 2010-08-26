@@ -11,4 +11,21 @@
 
 @implementation PhFacebook
 
+- (id) initWithApplicationID: (const NSString*) appID
+{
+    if ((self == [super init]))
+    {
+        _appID = [appID copy];
+    }
+    NSLog(@"Initialized with AppID '%@'", _appID);
+
+    return self;
+}
+
+- (void) dealloc
+{
+    [_appID release];
+    [super dealloc];
+}
+
 @end

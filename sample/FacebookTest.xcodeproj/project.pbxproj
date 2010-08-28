@@ -60,6 +60,7 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		3724495E1225EA0C009925D0 /* PhFacebook.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PhFacebook.xcodeproj; path = ../PhFacebook.xcodeproj; sourceTree = SOURCE_ROOT; };
 		372449661225EA36009925D0 /* PhFacebook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PhFacebook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		37FB6DCF12295FC5006339F3 /* ApplicationID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationID.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* FacebookTest-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "FacebookTest-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* FacebookTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FacebookTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -129,6 +130,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				37FB6DCF12295FC5006339F3 /* ApplicationID.h */,
 				256AC3F00F4B6AF500CF3369 /* FacebookTest_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);

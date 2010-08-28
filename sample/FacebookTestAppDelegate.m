@@ -14,7 +14,7 @@
 @synthesize token_label;
 @synthesize window;
 
-- (void) applicationDidFinishLaunching: (NSNotification*) aNotification 
+- (void) applicationDidFinishLaunching: (NSNotification*) aNotification
 {
     fb = [[PhFacebook alloc] initWithApplicationID: APPLICATION_ID delegate: self];
 }
@@ -23,7 +23,7 @@
 
 - (IBAction) getAccessToken: (id) sender
 {
-    NSLog(@"Getting access token...");
+    [fb getAccessTokenForPermissions: [NSArray arrayWithObject:@"read_stream"]];
 }
 
 #pragma mark PhFacebookDelegate methods

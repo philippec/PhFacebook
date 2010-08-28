@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		375CCD711225EED40064B3AE /* PhFacebook.h in Headers */ = {isa = PBXBuildFile; fileRef = 375CCD6F1225EED40064B3AE /* PhFacebook.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		375CCD721225EED40064B3AE /* PhFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 375CCD701225EED40064B3AE /* PhFacebook.m */; };
+		378DEC0E1228B619008061E4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 378DEC0D1228B618008061E4 /* WebKit.framework */; };
+		378DEC151228B9FD008061E4 /* PhWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 378DEC131228B9FD008061E4 /* PhWebViewController.h */; };
+		378DEC161228B9FD008061E4 /* PhWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 378DEC141228B9FD008061E4 /* PhWebViewController.m */; };
+		378DEC1F1228BC24008061E4 /* FacebookBrowser.xib in Resources */ = {isa = PBXBuildFile; fileRef = 378DEC1D1228BC1B008061E4 /* FacebookBrowser.xib */; };
+		37FB6D7712295681006339F3 /* PhFacebook_URLs.h in Headers */ = {isa = PBXBuildFile; fileRef = 37FB6D7612295681006339F3 /* PhFacebook_URLs.h */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -21,6 +26,11 @@
 		32DBCF5E0370ADEE00C91783 /* PhFacebook_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhFacebook_Prefix.pch; path = private/PhFacebook_Prefix.pch; sourceTree = "<group>"; };
 		375CCD6F1225EED40064B3AE /* PhFacebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhFacebook.h; path = classes/PhFacebook.h; sourceTree = "<group>"; };
 		375CCD701225EED40064B3AE /* PhFacebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhFacebook.m; path = classes/PhFacebook.m; sourceTree = "<group>"; };
+		378DEC0D1228B618008061E4 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
+		378DEC131228B9FD008061E4 /* PhWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhWebViewController.h; path = classes/PhWebViewController.h; sourceTree = "<group>"; };
+		378DEC141228B9FD008061E4 /* PhWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhWebViewController.m; path = classes/PhWebViewController.m; sourceTree = "<group>"; };
+		378DEC1E1228BC1B008061E4 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = en; path = en.lproj/FacebookBrowser.xib; sourceTree = "<group>"; };
+		37FB6D7612295681006339F3 /* PhFacebook_URLs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhFacebook_URLs.h; path = private/PhFacebook_URLs.h; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* PhFacebook.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PhFacebook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -32,6 +42,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */,
+				378DEC0E1228B619008061E4 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,6 +81,7 @@
 		089C1665FE841158C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				378DEC1D1228BC1B008061E4 /* FacebookBrowser.xib */,
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
 			);
@@ -81,6 +93,8 @@
 			children = (
 				375CCD6F1225EED40064B3AE /* PhFacebook.h */,
 				375CCD701225EED40064B3AE /* PhFacebook.m */,
+				378DEC131228B9FD008061E4 /* PhWebViewController.h */,
+				378DEC141228B9FD008061E4 /* PhWebViewController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -99,6 +113,7 @@
 				0867D6A5FE840307C02AAC07 /* AppKit.framework */,
 				D2F7E79907B2D74100F64583 /* CoreData.framework */,
 				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
+				378DEC0D1228B618008061E4 /* WebKit.framework */,
 			);
 			name = "Other Frameworks";
 			sourceTree = "<group>";
@@ -106,6 +121,7 @@
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				37FB6D7612295681006339F3 /* PhFacebook_URLs.h */,
 				32DBCF5E0370ADEE00C91783 /* PhFacebook_Prefix.pch */,
 			);
 			name = "Other Sources";
@@ -119,6 +135,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				375CCD711225EED40064B3AE /* PhFacebook.h in Headers */,
+				378DEC151228B9FD008061E4 /* PhWebViewController.h in Headers */,
+				37FB6D7712295681006339F3 /* PhFacebook_URLs.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,6 +186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */,
+				378DEC1F1228BC24008061E4 /* FacebookBrowser.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +198,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				375CCD721225EED40064B3AE /* PhFacebook.m in Sources */,
+				378DEC161228B9FD008061E4 /* PhWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,6 +211,14 @@
 				089C1667FE841158C02AAC07 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		378DEC1D1228BC1B008061E4 /* FacebookBrowser.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				378DEC1E1228BC1B008061E4 /* en */,
+			);
+			name = FacebookBrowser.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

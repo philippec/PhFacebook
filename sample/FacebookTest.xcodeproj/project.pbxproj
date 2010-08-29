@@ -254,7 +254,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -e \"ApplicationID.h\" ]\nthen\n\techo '#error Delete this line and enter your application ID below' > 'ApplicationID.h'\n\techo 'const NSString* APPLICATION_ID = @\"Your Application ID goes here\";' >> 'ApplicationID.h'\nfi";
+			shellScript = "if [ ! -e \"ApplicationID.h\" ]\nthen\n\techo '#error Delete this line and enter your application ID below' > 'ApplicationID.h'\n\techo 'NSString* APPLICATION_ID = @\"Your Application ID goes here\";' >> 'ApplicationID.h'\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 

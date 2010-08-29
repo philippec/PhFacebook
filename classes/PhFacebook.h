@@ -18,7 +18,7 @@
     PhWebViewController *_webViewController;
 }
 
-- (id) initWithApplicationID: (const NSString*) appID delegate: (id) delegate;
+- (id) initWithApplicationID: (NSString*) appID delegate: (id) delegate;
 
 // permissions: an array of required permissions
 // see http://developers.facebook.com/docs/authentication/permissions

@@ -15,11 +15,12 @@
 
 #pragma mark Initialization
 
-- (id) initWithApplicationID: (const NSString*) appID delegate: (id) delegate
+- (id) initWithApplicationID: (NSString*) appID delegate: (id) delegate
 {
     if ((self == [super init]))
     {
-        _appID = [appID copy];
+        if (appID)
+            _appID = [[NSString stringWithString: appID] retain];
         _delegate = delegate; // Don't retain delegate to avoid retain cycles
         _webViewController = nil;
     }

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class PhWebViewController;
+@class PhAuthenticationToken;
 
 @interface PhFacebook : NSObject
 {
@@ -16,6 +17,7 @@
     NSString *_appID;
     id _delegate;
     PhWebViewController *_webViewController;
+    PhAuthenticationToken *_authToken;
 }
 
 - (id) initWithApplicationID: (NSString*) appID delegate: (id) delegate;

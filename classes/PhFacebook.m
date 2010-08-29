@@ -8,6 +8,7 @@
 
 #import "PhFacebook.h"
 #import "PhWebViewController.h"
+#import "PhAuthenticationToken.h"
 #import "PhFacebook_URLs.h"
 
 
@@ -23,6 +24,7 @@
             _appID = [[NSString stringWithString: appID] retain];
         _delegate = delegate; // Don't retain delegate to avoid retain cycles
         _webViewController = nil;
+        _authToken = nil;
     }
     NSLog(@"Initialized with AppID '%@'", _appID);
 
@@ -33,6 +35,7 @@
 {
     [_appID release];
     [_webViewController release];
+    [_authToken release];
     [super dealloc];
 }
 
@@ -64,9 +67,12 @@
 {
     [_webViewController.window orderOut: self];
 
+    [_authToken release];
+    _authToken = nil;
     if (accessToken)
     {
         NSLog(@"Access token='%@', expires='%@'", accessToken, tokenExpires);
+        _authToken = [[PhAuthenticationToken alloc] initWithToken: accessToken secondsToExpiry: [tokenExpires floatValue]];
         if ([_delegate respondsToSelector: @selector(validToken:)])
             [_delegate validToken: self];
     }

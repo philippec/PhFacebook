@@ -54,8 +54,7 @@
     }
     
     [_webViewController.webView setMainFrameURL: authURL];
-    [_webViewController.window orderFront: self];
-    
+    [_webViewController.window makeKeyAndOrderFront: self];
 }
 
 @end

@@ -26,6 +26,11 @@
 // see http://developers.facebook.com/docs/authentication/permissions
 - (void) getAccessTokenForPermissions: (NSArray*) permissions;
 
+// request: the short version of the Facebook Graph API, e.g. "me/feed"
+// see http://developers.facebook.com/docs/api
+- (void) sendRequest: (NSString*) request;
+
+
 - (void) setAccessToken: (NSString*) accessToken expires: (NSString*) tokenExpires error: (NSString*) errorReason;
 
 @end
@@ -33,5 +38,6 @@
 @protocol PhFacebookDelegate
 
 - (void) validToken: (PhFacebook*) fbObject;
+- (void) requestResult: (NSDictionary*) result;
 
 @end

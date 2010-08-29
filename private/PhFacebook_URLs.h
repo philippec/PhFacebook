@@ -20,3 +20,5 @@
 #define kFBAccessToken @"access_token="
 #define kFBExpiresIn   @"expires_in="
 #define kFBErrorReason @"error_reason="
+
+#define kFBGraphApiURL @"https://graph.facebook.com/%@?access_token=%@"

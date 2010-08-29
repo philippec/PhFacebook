@@ -81,4 +81,37 @@
     }
 }
 
+- (void) sendFacebookRequest: (NSString*) request
+{
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+
+    if (_authToken)
+    {
+        NSString *str = [NSString stringWithFormat: kFBGraphApiURL, request, _authToken.authenticationToken];
+        NSURLRequest *req = [NSURLRequest requestWithURL: [NSURL URLWithString: str]];
+        NSURLResponse *response = nil;
+        NSError *error = nil;
+        NSData *data = [NSURLConnection sendSynchronousRequest: req returningResponse: &response error: &error];
+
+        if ([_delegate respondsToSelector: @selector(requestResult:)])
+        {
+            NSString *str = [[NSString alloc] initWithBytesNoCopy: (void*)[data bytes] length: [data length] encoding:NSASCIIStringEncoding freeWhenDone: NO];
+
+            NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:
+                str, @"result",
+                request, @"request",
+                self, @"sender",
+                nil];
+            [_delegate performSelectorOnMainThread:@selector(requestResult:) withObject: result waitUntilDone:YES];
+            [str release];
+        }
+    }
+    [pool drain];
+}
+
+- (void) sendRequest: (NSString*) request
+{
+	[NSThread detachNewThreadSelector: @selector(sendFacebookRequest:) toTarget: self withObject: request];
+}
+
 @end

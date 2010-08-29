@@ -37,7 +37,8 @@
 
 - (IBAction) sendRequest: (id) sender
 {
-    NSLog(@"sending request {%@}", request_text.stringValue);
+    [self.send_request setEnabled: NO];
+    [fb sendRequest: request_text.stringValue];
 }
 
 #pragma mark PhFacebookDelegate methods
@@ -49,6 +50,13 @@
     [self.request_text setEnabled: YES];
     [self.send_request setEnabled: YES];
     [self.result_text setEnabled: YES];
+}
+
+- (void) requestResult: (NSDictionary*) result
+{
+    [self.send_request setEnabled: YES];
+
+    self.result_text.stringValue = [NSString stringWithFormat: @"Request: {%@}\n%@", [result objectForKey: @"request"], [result objectForKey: @"result"]];
 }
 
 @end

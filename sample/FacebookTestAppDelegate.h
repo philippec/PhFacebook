@@ -14,12 +14,21 @@
     PhFacebook *fb;
 
     NSTextField *token_label;
+    NSTextField *request_label;
+    NSTextField *request_text;
+    NSTextField *result_text;
+    NSButton *send_request;
     NSWindow *window;
 }
 
 @property (assign) IBOutlet NSTextField *token_label;
+@property (assign) IBOutlet NSTextField *request_label;
+@property (assign) IBOutlet NSTextField *request_text;
+@property (assign) IBOutlet NSTextField *result_text;
+@property (assign) IBOutlet NSButton *send_request;
 @property (assign) IBOutlet NSWindow *window;
 
 - (IBAction) getAccessToken: (id) sender;
+- (IBAction) sendRequest: (id) sender;
 
 @end

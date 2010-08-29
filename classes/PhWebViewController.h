@@ -10,13 +10,18 @@
 #import <WebKit/WebKit.h>
 
 
+@class PhFacebook;
+
 @interface PhWebViewController : NSObject
 {
     IBOutlet NSWindow *window;
     IBOutlet WebView *webView;
+
+    PhFacebook *parent;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet WebView *webView;
+@property (assign) PhFacebook *parent;
 
 @end

@@ -42,9 +42,9 @@
     NSString *authURL;
     NSString *scope = [permissions componentsJoinedByString: @","];
     if (scope)
-        authURL = [NSString stringWithFormat: kFBAuthorizeWithScopeURL, _appID, scope];
+        authURL = [NSString stringWithFormat: kFBAuthorizeWithScopeURL, _appID, kFBLoginSuccessURL, scope];
     else
-        authURL = [NSString stringWithFormat: kFBAuthorizeURL, _appID];
+        authURL = [NSString stringWithFormat: kFBAuthorizeURL, _appID, kFBLoginSuccessURL];
 
     // Retrieve token from web page
     if (_webViewController == nil)
@@ -53,8 +53,25 @@
         [NSBundle loadNibNamed: @"FacebookBrowser" owner: _webViewController];
     }
     
+    _webViewController.parent = self;
     [_webViewController.webView setMainFrameURL: authURL];
     [_webViewController.window makeKeyAndOrderFront: self];
+}
+
+- (void) setAccessToken: (NSString*) accessToken expires: (NSString*) tokenExpires error: (NSString*) errorReason
+{
+    [_webViewController.window orderOut: self];
+
+    if (accessToken)
+    {
+        NSLog(@"Access token='%@', expires='%@'", accessToken, tokenExpires);
+        if ([_delegate respondsToSelector: @selector(validToken:)])
+            [_delegate validToken: self];
+    }
+    else
+    {
+        NSLog(@"Error! reason='%@'", errorReason);
+    }
 }
 
 @end

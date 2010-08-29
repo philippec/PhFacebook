@@ -9,6 +9,12 @@
 //
 
 
-static NSString *kFBAuthorizeURL = @"https://graph.facebook.com/oauth/authorize?client_id=%@&redirect_uri=http://www.facebook.com/connect/login_success.html&type=user_agent&display=popup";
+#define kFBAuthorizeURL @"https://graph.facebook.com/oauth/authorize?client_id=%@&redirect_uri=%@&type=user_agent&display=popup"
 
-static NSString *kFBAuthorizeWithScopeURL = @"https://graph.facebook.com/oauth/authorize?client_id=%@&redirect_uri=http://www.facebook.com/connect/login_success.html&scope=%@&type=user_agent&display=popup";
+#define kFBAuthorizeWithScopeURL @"https://graph.facebook.com/oauth/authorize?client_id=%@&redirect_uri=%@&scope=%@&type=user_agent&display=popup"
+
+#define kFBLoginSuccessURL @"http://www.facebook.com/connect/login_success.html"
+
+#define kFBAccessToken @"access_token="
+#define kFBExpiresIn   @"expires_in="
+#define kFBErrorReason @"error_reason="

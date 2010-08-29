@@ -24,6 +24,8 @@
 // see http://developers.facebook.com/docs/authentication/permissions
 - (void) getAccessTokenForPermissions: (NSArray*) permissions;
 
+- (void) setAccessToken: (NSString*) accessToken expires: (NSString*) tokenExpires error: (NSString*) errorReason;
+
 @end
 
 @protocol PhFacebookDelegate

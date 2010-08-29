@@ -17,6 +17,7 @@
 - (void) applicationDidFinishLaunching: (NSNotification*) aNotification
 {
     fb = [[PhFacebook alloc] initWithApplicationID: APPLICATION_ID delegate: self];
+    token_label.stringValue = @"Invalid";
 }
 
 #pragma mark IBActions
@@ -30,7 +31,7 @@
 
 - (void) validToken: (PhFacebook*) fbObject
 {
-    NSLog(@"Received valid token for %@", fb);
+    token_label.stringValue = @"Valid";
 }
 
 @end

@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import <PhFacebook/PhFacebook.h>
 
-@interface FacebookTestAppDelegate : NSObject <NSApplicationDelegate, PhFacebookDelegate>
+@interface FacebookTestAppDelegate : NSObject <PhFacebookDelegate>
 {
     PhFacebook *fb;
 

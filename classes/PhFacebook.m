@@ -69,16 +69,20 @@
 
     [_authToken release];
     _authToken = nil;
+    NSMutableDictionary *result = [NSMutableDictionary dictionary];
     if (accessToken)
     {
         _authToken = [[PhAuthenticationToken alloc] initWithToken: accessToken secondsToExpiry: [tokenExpires floatValue]];
-        if ([_delegate respondsToSelector: @selector(validToken:)])
-            [_delegate validToken: self];
+        [result setObject: [NSNumber numberWithBool: YES] forKey: @"valid"];
     }
     else
     {
-        NSLog(@"Error! reason='%@'", errorReason);
+        [result setObject: [NSNumber numberWithBool: NO] forKey: @"valid"];
+        [result setObject: errorReason forKey: @"error"];
     }
+
+    if ([_delegate respondsToSelector: @selector(tokenResult:)])
+        [_delegate tokenResult: result];
 }
 
 - (void) sendFacebookRequest: (NSString*) request

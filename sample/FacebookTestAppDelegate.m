@@ -43,13 +43,21 @@
 
 #pragma mark PhFacebookDelegate methods
 
-- (void) validToken: (PhFacebook*) fbObject
+- (void) tokenResult: (NSDictionary*) result
 {
-    self.token_label.stringValue = @"Valid";
-    [self.request_label setEnabled: YES];
-    [self.request_text setEnabled: YES];
-    [self.send_request setEnabled: YES];
-    [self.result_text setEnabled: YES];
+    if ([[result valueForKey: @"valid"] boolValue])
+    {
+        self.token_label.stringValue = @"Valid";
+        [self.request_label setEnabled: YES];
+        [self.request_text setEnabled: YES];
+        [self.send_request setEnabled: YES];
+        [self.result_text setEnabled: YES];
+    }
+    else
+    {
+        self.result_text.stringValue = [NSString stringWithFormat: @"Error: {%@}", [result valueForKey: @"error"]];
+    }
+
 }
 
 - (void) requestResult: (NSDictionary*) result

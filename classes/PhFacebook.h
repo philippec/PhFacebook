@@ -37,7 +37,7 @@
 
 @protocol PhFacebookDelegate
 
-- (void) validToken: (PhFacebook*) fbObject;
+- (void) tokenResult: (NSDictionary*) result;
 - (void) requestResult: (NSDictionary*) result;
 
 @end

@@ -53,10 +53,11 @@
         _webViewController = [[PhWebViewController alloc] init];
         [NSBundle loadNibNamed: @"FacebookBrowser" owner: _webViewController];
     }
-    
+
+    // Prepare window but keep it ordered out. The _webViewController will make it visible
+    // if it needs to.
     _webViewController.parent = self;
     [_webViewController.webView setMainFrameURL: authURL];
-    [_webViewController.window makeKeyAndOrderFront: self];
 }
 
 - (void) setAccessToken: (NSString*) accessToken expires: (NSString*) tokenExpires error: (NSString*) errorReason

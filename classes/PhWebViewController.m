@@ -33,6 +33,17 @@
 
 #pragma mark Delegate
 
+- (void) webView: (WebView*) sender didCommitLoadForFrame: (WebFrame*) frame;
+{
+    NSString *url = [sender mainFrameURL];
+    NSComparisonResult res = [url compare: kFBUIServerURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBUIServerURL length])];
+    if (res == NSOrderedSame)
+    {
+        // Facebook needs user input, show the window
+        [self.window makeKeyAndOrderFront: sender];
+    }
+}
+
 - (NSString*) extractParameter: (NSString*) param fromURL: (NSString*) url
 {
     NSString *res = nil;

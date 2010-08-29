@@ -15,6 +15,8 @@
 
 #define kFBLoginSuccessURL @"http://www.facebook.com/connect/login_success.html"
 
+#define kFBUIServerURL @"https://www.facebook.com/connect/uiserver.php"
+
 #define kFBAccessToken @"access_token="
 #define kFBExpiresIn   @"expires_in="
 #define kFBErrorReason @"error_reason="

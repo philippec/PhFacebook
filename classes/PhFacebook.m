@@ -71,7 +71,6 @@
     _authToken = nil;
     if (accessToken)
     {
-        NSLog(@"Access token='%@', expires='%@'", accessToken, tokenExpires);
         _authToken = [[PhAuthenticationToken alloc] initWithToken: accessToken secondsToExpiry: [tokenExpires floatValue]];
         if ([_delegate respondsToSelector: @selector(validToken:)])
             [_delegate validToken: self];

@@ -15,6 +15,7 @@
 
 @synthesize window;
 @synthesize webView;
+@synthesize cancelButton;
 @synthesize parent;
 
 - (id) init
@@ -29,6 +30,13 @@
 - (void) dealloc
 {
     [super dealloc];
+}
+
+- (void) awakeFromNib
+{
+    NSBundle *bundle = [NSBundle bundleForClass: [PhFacebook class]];
+    self.window.title = [bundle localizedStringForKey: @"FBAuthWindowTitle" value: @"" table: nil];
+    self.cancelButton.title = [bundle localizedStringForKey: @"FBAuthWindowCancel" value: @"" table: nil];;
 }
 
 #pragma mark Delegate

@@ -1,0 +1,10 @@
+/* 
+   Localizable.strings
+   PhFacebook
+
+   Created by Philippe on 10-08-29.
+   Copyright 2010 Philippe Casgrain. All rights reserved.
+ */
+
+"FBAuthWindowTitle" = "Autorisation Facebook";
+"FBAuthWindowCancel" = "Annuler";

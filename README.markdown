@@ -35,7 +35,7 @@ How-to-use
 
     * Import <PhFacebook/PhFacebook> where appropriate.
     * Create a new `PhFacebook*` object and set yourself as the delegate:
-            fb = [[PhFacebook alloc] initWithApplicationID: YOUR_APPLICATION_ID delegate: self];
+            PhFacebook* fb = [[PhFacebook alloc] initWithApplicationID: YOUR_APPLICATION_ID delegate: self];
     * Implement the PhFacebookDelegate protocol:
             - (void) tokenResult: (NSDictionary*) result;
             - (void) requestResult: (NSDictionary*) result
@@ -47,8 +47,8 @@ How-to-use
         [fb getAccessTokenForPermissions: [NSArray arrayWithObjects: @"read_stream", @"write_stream", nil]];
     * Just list the permissions you need in an array, or nil if you don't require special permissions.
     * There is a [list of permissions](http://developers.facebook.com/docs/authentication/permissions).
-    * Your delegate will get called with a dictionary. If [[result valueForKey: @"valid"] boolValue] is YES, the authorization request was successful.
-    * If the authorization was not successful, check [result valueForKey: @"error"].
+    * Your delegate will get called with a dictionary. If `[[result valueForKey: @"valid"] boolValue]` is YES, the authorization request was successful.
+    * If the authorization was not successful, check `[result valueForKey: @"error"]`.
     * __Note:__ the framework may put up an authorization window from Facebook. Subsequent requests are cached and/or hidden from the user as much as possible.
     * __Therefore:__ request a new token (and check its validity) for every series of operations. If some time elapses (for instance, you auto-check every hour), a new token is in order. _It is cheap to call this method_.
 

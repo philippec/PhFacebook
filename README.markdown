@@ -38,7 +38,9 @@ How-to-use
             PhFacebook* fb = [[PhFacebook alloc] initWithApplicationID: YOUR_APPLICATION_ID delegate: self];
     * Implement the PhFacebookDelegate protocol:
             - (void) tokenResult: (NSDictionary*) result;
-            - (void) requestResult: (NSDictionary*) result
+            - (void) requestResult: (NSDictionary*) result;
+            @optional
+            - (void) willShowUINotification: (PhFacebook*) sender;
       These methods will be called by PhFacebook when an authorization token was requested or an API request was made.
       More information below.
     * __See the sample application if you have any issues__.
@@ -47,7 +49,8 @@ How-to-use
         [fb getAccessTokenForPermissions: [NSArray arrayWithObjects: @"read_stream", @"write_stream", nil]];
     * Just list the permissions you need in an array, or nil if you don't require special permissions.
     * There is a [list of permissions](http://developers.facebook.com/docs/authentication/permissions).
-    * Your delegate will get called with a dictionary. If `[[result valueForKey: @"valid"] boolValue]` is YES, the authorization request was successful.
+    * Your delegate's `tokenResult:` will get called with a dictionary. If `[[result valueForKey: @"valid"] boolValue]` is YES, the authorization request was successful.
+    * If PhFacebook needs to display some UI (such as the Facebook Authentication dialog), your delegate's `willShowUINotification:` will get called. Take this opportunity to notify the user via a Dock bounce, for instance.
     * If the authorization was not successful, check `[result valueForKey: @"error"]`.
     * __Note:__ the framework may put up an authorization window from Facebook. Subsequent requests are cached and/or hidden from the user as much as possible.
     * __Therefore:__ request a new token (and check its validity) for every series of operations. If some time elapses (for instance, you auto-check every hour), a new token is in order. _It is cheap to call this method_.
@@ -55,7 +58,7 @@ How-to-use
 5.  Make API requests
     * You do not need to provide the URL or authorization token, PhFacebook takes care of that:
             [fb sendRequest: @"me/friends"];
-    * Your delegate will get called with a dictionary, whose "result" key's value is a JSON string from Facebook.
+    * Your delegate's `requestResult:` will get called with a dictionary, whose "result" key's value is a JSON string from Facebook.
     * You can use a JSON parser to turn the string into an NSDictionary, for instance SBJSON.
     * If the JSON string contains no data, check that you requested an authorization token with the correct permissions.
     * [The API is documented](http://developers.facebook.com/docs/api).

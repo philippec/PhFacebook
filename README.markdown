@@ -19,7 +19,7 @@ How-to-use
 
 1. Set Facebook Application Type
 
-* Go to your Facebook application page at http://www.facebook.com/developers/apps.php?app_id=<YOUR_APP_ID>
+* Go to your [Facebook application page](http://www.facebook.com/developers/apps.php?app_id=YOUR_APP_ID)
 * Select "Edit Settings"
 * In the Mobile section, set the Application Type to "Native application"
 
@@ -45,7 +45,7 @@ How-to-use
 4. Request an authorization token:
         [fb getAccessTokenForPermissions: [NSArray arrayWithObjects: @"read_stream", @"write_stream", nil]];
 * Just list the permissions you need in an array, or nil if you don't require special permissions.
-* The list of permissions is found at http://developers.facebook.com/docs/authentication/permissions
+* There is a [list of permissions] (http://developers.facebook.com/docs/authentication/permissions)
 * Your delegate will get called with a dictionary. If [[result valueForKey: @"valid"] boolValue] is YES, the authorization request was successful.
 * If the authorization was not successful, check [result valueForKey: @"error"].
 * __Note:__The framework may put up an authorization window from Facebook. Subsequent requests are cached and/or hidden from the user as much as possible.
@@ -57,13 +57,13 @@ How-to-use
 * Your delegate will get called with a dictionary, whose "result" key's value is a JSON string from Facebook.
 * You can use a JSON parser to turn the string into an NSDictionary, for instance SBJSON.
 * If the JSON string contains no data, check that you requested an authorization token with the correct permissions.
-* The API is documented at http://developers.facebook.com/docs/api
+* [The API is documented] (http://developers.facebook.com/docs/api)
 
 Notes
 -----
 
 > The sample application requires your Application ID to function properly. The first time you build the application, it will create a (non-versioned) file called ApplicationID.h. 
-> You __must__ edit this file with your Application ID from this Facebook page: http://www.facebook.com/developers/apps.php before the sample app will build.
+> You __must__ edit this file with your Application ID from [this Facebook page] (http://www.facebook.com/developers/apps.php) before the sample app will build.
 
 Todo
 ----

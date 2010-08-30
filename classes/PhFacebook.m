@@ -40,41 +40,11 @@
     [super dealloc];
 }
 
-#pragma mark Access
-
-- (void) getAccessTokenForPermissions: (NSArray*) permissions
+- (void) notifyDelegateForToken: (PhAuthenticationToken*) token withError: (NSString*) errorReason
 {
-    NSString *authURL;
-    NSString *scope = [permissions componentsJoinedByString: @","];
-    if (scope)
-        authURL = [NSString stringWithFormat: kFBAuthorizeWithScopeURL, _appID, kFBLoginSuccessURL, scope];
-    else
-        authURL = [NSString stringWithFormat: kFBAuthorizeURL, _appID, kFBLoginSuccessURL];
-
-    // Retrieve token from web page
-    if (_webViewController == nil)
-    {
-        _webViewController = [[PhWebViewController alloc] init];
-        [NSBundle loadNibNamed: @"FacebookBrowser" owner: _webViewController];
-    }
-
-    // Prepare window but keep it ordered out. The _webViewController will make it visible
-    // if it needs to.
-    _webViewController.parent = self;
-    _webViewController.permissions = scope;
-    [_webViewController.webView setMainFrameURL: authURL];
-}
-
-- (void) setAccessToken: (NSString*) accessToken expires: (NSString*) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason
-{
-    [_webViewController.window orderOut: self];
-
-    [_authToken release];
-    _authToken = nil;
     NSMutableDictionary *result = [NSMutableDictionary dictionary];
-    if (accessToken)
+    if (token)
     {
-        _authToken = [[PhAuthenticationToken alloc] initWithToken: accessToken secondsToExpiry: [tokenExpires floatValue] permissions: perms];
         [result setObject: [NSNumber numberWithBool: YES] forKey: @"valid"];
     }
     else
@@ -85,6 +55,61 @@
 
     if ([_delegate respondsToSelector: @selector(tokenResult:)])
         [_delegate tokenResult: result];
+}
+
+#pragma mark Access
+
+- (void) getAccessTokenForPermissions: (NSArray*) permissions
+{
+    BOOL validToken = NO;
+    NSString *scope = [permissions componentsJoinedByString: @","];
+
+    if ([_authToken.permissions isCaseInsensitiveLike: scope])
+    {
+        // We already have a token for these permissions; check if it has expired or not
+        if ([[_authToken.expiry laterDate: [NSDate date]] isEqual: _authToken.expiry])
+            validToken = YES;
+    }
+
+    if (validToken)
+    {
+        [self notifyDelegateForToken: _authToken withError: nil];
+    }
+    else
+    {
+        // Use _webViewController to request a new token
+        NSString *authURL;
+        if (scope)
+            authURL = [NSString stringWithFormat: kFBAuthorizeWithScopeURL, _appID, kFBLoginSuccessURL, scope];
+        else
+            authURL = [NSString stringWithFormat: kFBAuthorizeURL, _appID, kFBLoginSuccessURL];
+
+        // Retrieve token from web page
+        if (_webViewController == nil)
+        {
+            _webViewController = [[PhWebViewController alloc] init];
+            [NSBundle loadNibNamed: @"FacebookBrowser" owner: _webViewController];
+        }
+
+        // Prepare window but keep it ordered out. The _webViewController will make it visible
+        // if it needs to.
+        _webViewController.parent = self;
+        _webViewController.permissions = scope;
+        [_webViewController.webView setMainFrameURL: authURL];
+    }
+}
+
+- (void) setAccessToken: (NSString*) accessToken expires: (NSString*) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason
+{
+    [_webViewController.window orderOut: self];
+
+    [_authToken release];
+    _authToken = nil;
+
+    if (accessToken)
+        _authToken = [[PhAuthenticationToken alloc] initWithToken: accessToken secondsToExpiry: [tokenExpires floatValue] permissions: perms];
+
+    [self notifyDelegateForToken: _authToken withError: errorReason];
 }
 
 - (void) sendFacebookRequest: (NSString*) request

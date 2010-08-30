@@ -69,7 +69,7 @@
 
 - (void) willShowUINotification: (PhFacebook*) sender
 {
-    // PhFacebook will show some UI, so maybe move to front or alert the user
+    [NSApp requestUserAttention: NSInformationalRequest];
 }
 
 @end

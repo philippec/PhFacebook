@@ -32,7 +32,7 @@
 
 - (IBAction) getAccessToken: (id) sender
 {
-    [fb getAccessTokenForPermissions: [NSArray arrayWithObject:@"read_stream"]];
+    [fb getAccessTokenForPermissions: [NSArray arrayWithObject: @"read_stream"]];
 }
 
 - (IBAction) sendRequest: (id) sender

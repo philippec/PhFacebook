@@ -145,4 +145,12 @@
 	[NSThread detachNewThreadSelector: @selector(sendFacebookRequest:) toTarget: self withObject: request];
 }
 
+#pragma mark Notifications
+
+- (void) webViewWillShowUI
+{
+    if ([_delegate respondsToSelector: @selector(willShowUINotification:)])
+        [_delegate performSelectorOnMainThread:@selector(willShowUINotification:) withObject: self waitUntilDone:YES];
+}
+
 @end

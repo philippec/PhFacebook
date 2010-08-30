@@ -67,4 +67,9 @@
     self.result_text.stringValue = [NSString stringWithFormat: @"Request: {%@}\n%@", [result objectForKey: @"request"], [result objectForKey: @"result"]];
 }
 
+- (void) willShowUINotification: (PhFacebook*) sender
+{
+    // PhFacebook will show some UI, so maybe move to front or alert the user
+}
+
 @end

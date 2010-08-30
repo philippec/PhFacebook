@@ -34,11 +34,17 @@
 
 - (void) setAccessToken: (NSString*) accessToken expires: (NSString*) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason;
 
+- (void) webViewWillShowUI;
+
 @end
 
 @protocol PhFacebookDelegate
 
+@required
 - (void) tokenResult: (NSDictionary*) result;
 - (void) requestResult: (NSDictionary*) result;
+
+@optional
+- (void) willShowUINotification: (PhFacebook*) sender;
 
 @end

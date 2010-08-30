@@ -50,6 +50,8 @@
     {
         // Facebook needs user input, show the window
         [self.window makeKeyAndOrderFront: sender];
+        // Notify parent that we're about to show UI
+        [self.parent webViewWillShowUI];
     }
 }
 

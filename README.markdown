@@ -17,15 +17,16 @@ PhFacebook is an embeddable MacOSX framework to easily access Facebook's API.
 How-to-use
 ----------
 
-1.  Set Facebook Application Type
+1.  Set your Facebook Application Type
 
-    * Go to your [Facebook application page](http://www.facebook.com/developers/apps.php?app_id=YOUR_APP_ID)
-    * Select "Edit Settings"
-    * In the Mobile section, set the Application Type to "Native application"
+    * Go to your [Facebook application page](http://www.facebook.com/developers/apps.php?app_id=YOUR_APP_ID).
+    * Select "Edit Settings".
+    * In the Mobile section, set the Application Type to "Native application".
 
 2.  Build PhFacebook.framework
 
-    * Select "PhFacebook.framework" in the Finder
+    * Open "PhFacebook.xcodeproj" and click "Build".
+    * Select "PhFacebook.framework" in the Finder.
     * Drag it to your "Frameworks" folder in your Project list and add it to the appropriate target.
     * In your appropriate target, add a "Copy" build phase. Set its destination to "Frameworks".
     * Drag "PhFacebook.framework" to this Copy build phase to ensure it is embedded in your application.
@@ -40,16 +41,16 @@ How-to-use
             - (void) requestResult: (NSDictionary*) result
       These methods will be called by PhFacebook when an authorization token was requested or an API request was made.
       More information below.
-    * See the sample application if you have any issues
+    * __See the sample application if you have any issues__.
 
 4.  Request an authorization token:
         [fb getAccessTokenForPermissions: [NSArray arrayWithObjects: @"read_stream", @"write_stream", nil]];
     * Just list the permissions you need in an array, or nil if you don't require special permissions.
-    * There is a [list of permissions] (http://developers.facebook.com/docs/authentication/permissions)
+    * There is a [list of permissions](http://developers.facebook.com/docs/authentication/permissions).
     * Your delegate will get called with a dictionary. If [[result valueForKey: @"valid"] boolValue] is YES, the authorization request was successful.
     * If the authorization was not successful, check [result valueForKey: @"error"].
-    * __Note:__The framework may put up an authorization window from Facebook. Subsequent requests are cached and/or hidden from the user as much as possible.
-    * __Therefore:__ request a new token (and check its validity) for every series of operations. If some time elapses (for instance, you auto-check every hour), a new token is in order. It is cheap to call this method.
+    * __Note:__ the framework may put up an authorization window from Facebook. Subsequent requests are cached and/or hidden from the user as much as possible.
+    * __Therefore:__ request a new token (and check its validity) for every series of operations. If some time elapses (for instance, you auto-check every hour), a new token is in order. _It is cheap to call this method_.
 
 5.  Make API requests
     * You do not need to provide the URL or authorization token, PhFacebook takes care of that:
@@ -57,13 +58,13 @@ How-to-use
     * Your delegate will get called with a dictionary, whose "result" key's value is a JSON string from Facebook.
     * You can use a JSON parser to turn the string into an NSDictionary, for instance SBJSON.
     * If the JSON string contains no data, check that you requested an authorization token with the correct permissions.
-    * [The API is documented] (http://developers.facebook.com/docs/api)
+    * [The API is documented](http://developers.facebook.com/docs/api).
 
 Notes
 -----
 
-> The sample application requires your Application ID to function properly. The first time you build the application, it will create a (non-versioned) file called ApplicationID.h. 
-> You __must__ edit this file with your Application ID from [this Facebook page] (http://www.facebook.com/developers/apps.php) before the sample app will build.
+> The sample application requires your Application ID to function properly. The first time you build the application, it will create a (non-versioned) file called `ApplicationID.h`.
+> You __must__ edit this file with your Application ID from [this Facebook page](http://www.facebook.com/developers/apps.php) before the sample app will build.
 
 Todo
 ----

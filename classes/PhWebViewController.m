@@ -17,6 +17,7 @@
 @synthesize webView;
 @synthesize cancelButton;
 @synthesize parent;
+@synthesize permissions;
 
 - (id) init
 {
@@ -80,7 +81,7 @@
         NSString *tokenExpires = [self extractParameter: kFBExpiresIn fromURL: url];
         NSString *errorReason = [self extractParameter: kFBErrorReason fromURL: url];
 
-        [parent setAccessToken: accessToken expires: tokenExpires error: errorReason];
+        [parent setAccessToken: accessToken expires: tokenExpires permissions: self.permissions error: errorReason];
     }
 }
 

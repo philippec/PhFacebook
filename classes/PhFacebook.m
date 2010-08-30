@@ -25,6 +25,7 @@
         _delegate = delegate; // Don't retain delegate to avoid retain cycles
         _webViewController = nil;
         _authToken = nil;
+        _permissions = nil;
     }
     NSLog(@"Initialized with AppID '%@'", _appID);
 
@@ -60,10 +61,11 @@
     // Prepare window but keep it ordered out. The _webViewController will make it visible
     // if it needs to.
     _webViewController.parent = self;
+    _webViewController.permissions = scope;
     [_webViewController.webView setMainFrameURL: authURL];
 }
 
-- (void) setAccessToken: (NSString*) accessToken expires: (NSString*) tokenExpires error: (NSString*) errorReason
+- (void) setAccessToken: (NSString*) accessToken expires: (NSString*) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason
 {
     [_webViewController.window orderOut: self];
 
@@ -72,7 +74,7 @@
     NSMutableDictionary *result = [NSMutableDictionary dictionary];
     if (accessToken)
     {
-        _authToken = [[PhAuthenticationToken alloc] initWithToken: accessToken secondsToExpiry: [tokenExpires floatValue]];
+        _authToken = [[PhAuthenticationToken alloc] initWithToken: accessToken secondsToExpiry: [tokenExpires floatValue] permissions: perms];
         [result setObject: [NSNumber numberWithBool: YES] forKey: @"valid"];
     }
     else

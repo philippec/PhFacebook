@@ -18,6 +18,7 @@
     id _delegate;
     PhWebViewController *_webViewController;
     PhAuthenticationToken *_authToken;
+    NSString *_permissions;
 }
 
 - (id) initWithApplicationID: (NSString*) appID delegate: (id) delegate;
@@ -31,7 +32,7 @@
 - (void) sendRequest: (NSString*) request;
 
 
-- (void) setAccessToken: (NSString*) accessToken expires: (NSString*) tokenExpires error: (NSString*) errorReason;
+- (void) setAccessToken: (NSString*) accessToken expires: (NSString*) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason;
 
 @end
 

@@ -13,13 +13,15 @@
 
 @synthesize authenticationToken = _authenticationToken;
 @synthesize expiry = _expiry;
+@synthesize permissions = _permissions;
 
-- (id) initWithToken: (NSString*) token secondsToExpiry: (NSTimeInterval) seconds
+- (id) initWithToken: (NSString*) token secondsToExpiry: (NSTimeInterval) seconds permissions: (NSString*) perms
 {
     if ((self == [super init]))
     {
         self.authenticationToken = token;
         self.expiry = [NSDate dateWithTimeIntervalSinceNow: seconds];
+        self.permissions = perms;
     }
 
     return self;

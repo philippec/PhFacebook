@@ -10,6 +10,7 @@
 #import "PhWebViewController.h"
 #import "PhAuthenticationToken.h"
 #import "PhFacebook_URLs.h"
+#import "Debug.h"
 
 
 @implementation PhFacebook
@@ -27,7 +28,7 @@
         _authToken = nil;
         _permissions = nil;
     }
-    NSLog(@"Initialized with AppID '%@'", _appID);
+    DebugLog(@"Initialized with AppID '%@'", _appID);
 
     return self;
 }

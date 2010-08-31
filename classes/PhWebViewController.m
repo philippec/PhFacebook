@@ -9,6 +9,7 @@
 #import "PhWebViewController.h"
 #import "PhFacebook_URLs.h"
 #import "PhFacebook.h"
+#import "Debug.h"
 
 
 @implementation PhWebViewController
@@ -45,6 +46,7 @@
 - (void) webView: (WebView*) sender didCommitLoadForFrame: (WebFrame*) frame;
 {
     NSString *url = [sender mainFrameURL];
+    DebugLog(@"didCommitLoadForFrame: {%@}", url);
     NSComparisonResult res = [url compare: kFBUIServerURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBUIServerURL length])];
     if (res == NSOrderedSame)
     {
@@ -76,6 +78,7 @@
 - (void) webView: (WebView*) sender didFinishLoadForFrame: (WebFrame*) frame
 {
     NSString *url = [sender mainFrameURL];
+    DebugLog(@"didFinishLoadForFrame: {%@}", url);
     NSComparisonResult res = [url compare: kFBLoginSuccessURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBLoginSuccessURL length])];
     if (res == NSOrderedSame)
     {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		374AB110122CB847004A5C23 /* Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = 374AB10F122CB846004A5C23 /* Debug.h */; };
 		375CCD711225EED40064B3AE /* PhFacebook.h in Headers */ = {isa = PBXBuildFile; fileRef = 375CCD6F1225EED40064B3AE /* PhFacebook.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		375CCD721225EED40064B3AE /* PhFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 375CCD701225EED40064B3AE /* PhFacebook.m */; };
 		378DEC0E1228B619008061E4 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 378DEC0D1228B618008061E4 /* WebKit.framework */; };
@@ -24,6 +25,7 @@
 		089C1667FE841158C02AAC07 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		32DBCF5E0370ADEE00C91783 /* PhFacebook_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhFacebook_Prefix.pch; path = private/PhFacebook_Prefix.pch; sourceTree = "<group>"; };
+		374AB10F122CB846004A5C23 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debug.h; path = private/Debug.h; sourceTree = "<group>"; };
 		375CCD6F1225EED40064B3AE /* PhFacebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhFacebook.h; path = classes/PhFacebook.h; sourceTree = "<group>"; };
 		375CCD701225EED40064B3AE /* PhFacebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhFacebook.m; path = classes/PhFacebook.m; sourceTree = "<group>"; };
 		378DEC0D1228B618008061E4 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
@@ -128,6 +130,7 @@
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				374AB10F122CB846004A5C23 /* Debug.h */,
 				37FB6D7612295681006339F3 /* PhFacebook_URLs.h */,
 				32DBCF5E0370ADEE00C91783 /* PhFacebook_Prefix.pch */,
 			);
@@ -142,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				375CCD711225EED40064B3AE /* PhFacebook.h in Headers */,
+				374AB110122CB847004A5C23 /* Debug.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +289,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;

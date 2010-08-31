@@ -43,18 +43,23 @@
 
 #pragma mark Delegate
 
+- (void) showUI
+{
+    // Facebook needs user input, show the window
+    [self.window makeKeyAndOrderFront: self];
+    // Notify parent that we're about to show UI
+    [self.parent webViewWillShowUI];
+}
+
+
 - (void) webView: (WebView*) sender didCommitLoadForFrame: (WebFrame*) frame;
 {
     NSString *url = [sender mainFrameURL];
     DebugLog(@"didCommitLoadForFrame: {%@}", url);
+
     NSComparisonResult res = [url compare: kFBUIServerURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBUIServerURL length])];
     if (res == NSOrderedSame)
-    {
-        // Facebook needs user input, show the window
-        [self.window makeKeyAndOrderFront: sender];
-        // Notify parent that we're about to show UI
-        [self.parent webViewWillShowUI];
-    }
+        [self showUI];
 }
 
 - (NSString*) extractParameter: (NSString*) param fromURL: (NSString*) url
@@ -79,6 +84,7 @@
 {
     NSString *url = [sender mainFrameURL];
     DebugLog(@"didFinishLoadForFrame: {%@}", url);
+
     NSComparisonResult res = [url compare: kFBLoginSuccessURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBLoginSuccessURL length])];
     if (res == NSOrderedSame)
     {
@@ -88,6 +94,10 @@
 
         [parent setAccessToken: accessToken expires: tokenExpires permissions: self.permissions error: errorReason];
     }
+
+    res = [url compare: kFBLoginURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBLoginURL length])];
+    if (res == NSOrderedSame)
+        [self showUI];
 }
 
 

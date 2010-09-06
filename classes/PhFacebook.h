@@ -24,15 +24,16 @@
 - (id) initWithApplicationID: (NSString*) appID delegate: (id) delegate;
 
 // permissions: an array of required permissions
-// see http://developers.facebook.com/docs/authentication/permissions
-- (void) getAccessTokenForPermissions: (NSArray*) permissions;
+//              see http://developers.facebook.com/docs/authentication/permissions
+// canCache: save and retrieve token locally if not expired
+- (void) getAccessTokenForPermissions: (NSArray*) permissions cached: (BOOL) canCache;
 
 // request: the short version of the Facebook Graph API, e.g. "me/feed"
 // see http://developers.facebook.com/docs/api
 - (void) sendRequest: (NSString*) request;
 
 
-- (void) setAccessToken: (NSString*) accessToken expires: (NSString*) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason;
+- (void) setAccessToken: (NSString*) accessToken expires: (NSTimeInterval) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason;
 
 - (void) webViewWillShowUI;
 

@@ -12,6 +12,9 @@
 #import "PhFacebook_URLs.h"
 #import "Debug.h"
 
+#define kFBStoreAccessToken @"FBAStoreccessToken"
+#define kFBStoreTokenExpiry @"FBStoreTokenExpiry"
+#define kFBStoreAccessPermissions @"FBStoreAccessPermissions"
 
 @implementation PhFacebook
 
@@ -46,6 +49,12 @@
     NSMutableDictionary *result = [NSMutableDictionary dictionary];
     if (token)
     {
+        // Save it to user defaults
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject: token.authenticationToken forKey: kFBStoreAccessToken];
+        [defaults setObject: token.expiry forKey: kFBStoreTokenExpiry];
+        [defaults setObject: token.permissions forKey: kFBStoreAccessPermissions];
+
         [result setObject: [NSNumber numberWithBool: YES] forKey: @"valid"];
     }
     else
@@ -60,10 +69,40 @@
 
 #pragma mark Access
 
-- (void) getAccessTokenForPermissions: (NSArray*) permissions
+- (void) clearToken
+{
+    [_authToken release];
+    _authToken = nil;
+}
+
+- (BOOL) setAccessToken: (NSString*) accessToken expires: (NSTimeInterval) tokenExpires permissions: (NSString*) perms
+{
+    [self clearToken];
+
+    if (accessToken)
+        _authToken = [[PhAuthenticationToken alloc] initWithToken: accessToken secondsToExpiry: tokenExpires permissions: perms];
+
+    return (_authToken != nil);
+}
+
+- (void) getAccessTokenForPermissions: (NSArray*) permissions cached: (BOOL) canCache
 {
     BOOL validToken = NO;
     NSString *scope = [permissions componentsJoinedByString: @","];
+
+    if (canCache && _authToken == nil)
+    {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *accessToken = [defaults stringForKey: kFBStoreAccessToken];
+        NSDate *date = [defaults objectForKey: kFBStoreTokenExpiry];
+        NSString *perms = [defaults stringForKey: kFBStoreAccessPermissions];
+        if (accessToken && date && perms)
+        {
+            NSTimeInterval seconds = [date timeIntervalSinceNow];
+            // Do not notify delegate yet...
+            [self setAccessToken: accessToken expires: seconds permissions: perms];
+        }
+    }
 
     if ([_authToken.permissions isCaseInsensitiveLike: scope])
     {
@@ -78,6 +117,8 @@
     }
     else
     {
+        [self clearToken];
+
         // Use _webViewController to request a new token
         NSString *authURL;
         if (scope)
@@ -100,17 +141,10 @@
     }
 }
 
-- (void) setAccessToken: (NSString*) accessToken expires: (NSString*) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason
+- (void) setAccessToken: (NSString*) accessToken expires: (NSTimeInterval) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason
 {
-    [_webViewController.window orderOut: self];
-
-    [_authToken release];
-    _authToken = nil;
-
-    if (accessToken)
-        _authToken = [[PhAuthenticationToken alloc] initWithToken: accessToken secondsToExpiry: [tokenExpires floatValue] permissions: perms];
-
-    [self notifyDelegateForToken: _authToken withError: errorReason];
+    if ([self setAccessToken: accessToken expires: tokenExpires permissions: perms])
+        [self notifyDelegateForToken: _authToken withError: errorReason];
 }
 
 - (void) sendFacebookRequest: (NSString*) request

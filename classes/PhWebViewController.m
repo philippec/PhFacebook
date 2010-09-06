@@ -92,7 +92,9 @@
         NSString *tokenExpires = [self extractParameter: kFBExpiresIn fromURL: url];
         NSString *errorReason = [self extractParameter: kFBErrorReason fromURL: url];
 
-        [parent setAccessToken: accessToken expires: tokenExpires permissions: self.permissions error: errorReason];
+        [self.window orderOut: self];
+
+        [parent setAccessToken: accessToken expires: [tokenExpires floatValue] permissions: self.permissions error: errorReason];
     }
 
     res = [url compare: kFBLoginURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBLoginURL length])];

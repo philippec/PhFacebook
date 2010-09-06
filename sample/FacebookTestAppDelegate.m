@@ -32,7 +32,8 @@
 
 - (IBAction) getAccessToken: (id) sender
 {
-    [fb getAccessTokenForPermissions: [NSArray arrayWithObject: @"read_stream"]];
+    // Always get a new token, don't get a cached one
+    [fb getAccessTokenForPermissions: [NSArray arrayWithObject: @"read_stream"] cached: NO];
 }
 
 - (IBAction) sendRequest: (id) sender

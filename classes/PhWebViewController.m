@@ -11,6 +11,7 @@
 #import "PhFacebook.h"
 #import "Debug.h"
 
+//#define ALWAYS_SHOW_UI
 
 @implementation PhWebViewController
 
@@ -60,6 +61,10 @@
     NSComparisonResult res = [url compare: kFBUIServerURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBUIServerURL length])];
     if (res == NSOrderedSame)
         [self showUI];
+
+#ifdef ALWAYS_SHOW_UI
+    [self showUI];
+#endif
 }
 
 - (NSString*) extractParameter: (NSString*) param fromURL: (NSString*) url
@@ -100,6 +105,10 @@
     res = [url compare: kFBLoginURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBLoginURL length])];
     if (res == NSOrderedSame)
         [self showUI];
+
+#ifdef ALWAYS_SHOW_UI
+    [self showUI];
+#endif
 }
 
 @end

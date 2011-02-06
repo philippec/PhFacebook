@@ -75,14 +75,12 @@
     _authToken = nil;
 }
 
-- (BOOL) setAccessToken: (NSString*) accessToken expires: (NSTimeInterval) tokenExpires permissions: (NSString*) perms
+- (void) setAccessToken: (NSString*) accessToken expires: (NSTimeInterval) tokenExpires permissions: (NSString*) perms
 {
     [self clearToken];
 
     if (accessToken)
         _authToken = [[PhAuthenticationToken alloc] initWithToken: accessToken secondsToExpiry: tokenExpires permissions: perms];
-
-    return (_authToken != nil);
 }
 
 - (void) getAccessTokenForPermissions: (NSArray*) permissions cached: (BOOL) canCache
@@ -143,8 +141,8 @@
 
 - (void) setAccessToken: (NSString*) accessToken expires: (NSTimeInterval) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason
 {
-    if ([self setAccessToken: accessToken expires: tokenExpires permissions: perms])
-        [self notifyDelegateForToken: _authToken withError: errorReason];
+	[self setAccessToken: accessToken expires: tokenExpires permissions: perms];
+	[self notifyDelegateForToken: _authToken withError: errorReason];
 }
 
 - (void) sendFacebookRequest: (NSString*) request

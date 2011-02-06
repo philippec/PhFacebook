@@ -46,7 +46,7 @@ How-to-use
     * __See the sample application if you have any issues__.
 
 4.  Request an authorization token:
-        [fb getAccessTokenForPermissions: [NSArray arrayWithObjects: @"read_stream", @"write_stream", nil]];
+        [fb getAccessTokenForPermissions: [NSArray arrayWithObjects: @"read_stream", @"publish_stream", nil]];
     * Just list the permissions you need in an array, or nil if you don't require special permissions.
     * There is a [list of permissions](http://developers.facebook.com/docs/authentication/permissions).
     * Your delegate's `tokenResult:` will get called with a dictionary. If `[[result valueForKey: @"valid"] boolValue]` is YES, the authorization request was successful.

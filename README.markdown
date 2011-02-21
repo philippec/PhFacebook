@@ -46,7 +46,7 @@ How-to-use
     * __See the sample application if you have any issues__.
 
 4.  Request an authorization token:
-        [fb getAccessTokenForPermissions: [NSArray arrayWithObjects: @"read_stream", @"write_stream", nil]];
+        [fb getAccessTokenForPermissions: [NSArray arrayWithObjects: @"read_stream", @"publish_stream", nil]];
     * Just list the permissions you need in an array, or nil if you don't require special permissions.
     * There is a [list of permissions](http://developers.facebook.com/docs/authentication/permissions).
     * Your delegate's `tokenResult:` will get called with a dictionary. If `[[result valueForKey: @"valid"] boolValue]` is YES, the authorization request was successful.
@@ -69,7 +69,8 @@ Notes
 > The sample application requires your Application ID to function properly. The first time you build the application, it will create a (non-versioned) file called `ApplicationID.h`.
 > You __must__ edit this file with your Application ID from [this Facebook page](http://www.facebook.com/developers/apps.php) before the sample app will build.
 
-Todo
-----
+Tips and Tricks
+---------------
 
-* Could probably use better error handling and recovery, though I have not encountered more errors in my development and testing.
+* Embedding a framework is easier if you set up a common build folder in Xcode -> Preferences -> Building -> Customized location.
+* You can #define ALWAYS_SHOW_UI in PhWebViewController.m to help you debug the framework, since by default the framework tries to hide UI as much as possible. 

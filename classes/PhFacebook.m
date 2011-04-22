@@ -145,13 +145,24 @@
 	[self notifyDelegateForToken: _authToken withError: errorReason];
 }
 
-- (void) sendFacebookRequest: (NSString*) request
+- (void)sendFacebookRequest:(NSDictionary *)allParams
 {
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 
     if (_authToken)
     {
+        NSString *request = [allParams objectForKey:@"request"];
         NSString *str = [NSString stringWithFormat: kFBGraphApiURL, request, _authToken.authenticationToken];
+        
+        NSDictionary *params = [allParams objectForKey:@"params"];
+        if (params != nil) {
+            NSMutableString *strWithParams = [NSMutableString stringWithString:str];
+            for (NSString *p in [params allKeys]) {
+                [strWithParams appendFormat:@"&%@=%@", p, [params objectForKey:p]];
+            }
+            str = strWithParams;
+        }
+        
         NSURLRequest *req = [NSURLRequest requestWithURL: [NSURL URLWithString: str]];
         NSURLResponse *response = nil;
         NSError *error = nil;
@@ -173,9 +184,18 @@
     [pool drain];
 }
 
+- (void)sendRequest:(NSString *)request params:(NSDictionary *)params;
+{
+    NSMutableDictionary *allParams = [NSMutableDictionary dictionaryWithObject:request forKey:@"request"];
+    if (params != nil)
+        [allParams setObject:params forKey:@"params"];
+
+	[NSThread detachNewThreadSelector:@selector(sendFacebookRequest:) toTarget:self withObject:allParams];    
+}
+
 - (void) sendRequest: (NSString*) request
 {
-	[NSThread detachNewThreadSelector: @selector(sendFacebookRequest:) toTarget: self withObject: request];
+    [self sendRequest:request params:nil];
 }
 
 #pragma mark Notifications

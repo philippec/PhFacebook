@@ -145,21 +145,21 @@
 	[self notifyDelegateForToken: _authToken withError: errorReason];
 }
 
-- (void)sendFacebookRequest:(NSDictionary *)allParams
+- (void) sendFacebookRequest: (NSDictionary*) allParams
 {
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 
     if (_authToken)
     {
-        NSString *request = [allParams objectForKey:@"request"];
+        NSString *request = [allParams objectForKey: @"request"];
         NSString *str = [NSString stringWithFormat: kFBGraphApiURL, request, _authToken.authenticationToken];
         
         NSDictionary *params = [allParams objectForKey:@"params"];
-        if (params != nil) {
-            NSMutableString *strWithParams = [NSMutableString stringWithString:str];
-            for (NSString *p in [params allKeys]) {
-                [strWithParams appendFormat:@"&%@=%@", p, [params objectForKey:p]];
-            }
+        if (params != nil) 
+        {
+            NSMutableString *strWithParams = [NSMutableString stringWithString: str];
+            for (NSString *p in [params allKeys]) 
+                [strWithParams appendFormat: @"&%@=%@", p, [params objectForKey: p]];
             str = strWithParams;
         }
         
@@ -184,18 +184,18 @@
     [pool drain];
 }
 
-- (void)sendRequest:(NSString *)request params:(NSDictionary *)params;
+- (void) sendRequest: (NSString*) request params: (NSDictionary*) params;
 {
-    NSMutableDictionary *allParams = [NSMutableDictionary dictionaryWithObject:request forKey:@"request"];
+    NSMutableDictionary *allParams = [NSMutableDictionary dictionaryWithObject: request forKey: @"request"];
     if (params != nil)
-        [allParams setObject:params forKey:@"params"];
+        [allParams setObject: params forKey: @"params"];
 
-	[NSThread detachNewThreadSelector:@selector(sendFacebookRequest:) toTarget:self withObject:allParams];    
+	[NSThread detachNewThreadSelector: @selector(sendFacebookRequest:) toTarget: self withObject: allParams];    
 }
 
 - (void) sendRequest: (NSString*) request
 {
-    [self sendRequest:request params:nil];
+    [self sendRequest: request params: nil];
 }
 
 #pragma mark Notifications

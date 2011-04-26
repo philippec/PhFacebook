@@ -31,6 +31,7 @@
 // request: the short version of the Facebook Graph API, e.g. "me/feed"
 // see http://developers.facebook.com/docs/api
 - (void) sendRequest: (NSString*) request;
+- (void) sendRequest: (NSString*) request params: (NSDictionary*) params;
 
 
 - (void) setAccessToken: (NSString*) accessToken expires: (NSTimeInterval) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason;

@@ -145,6 +145,11 @@
 	[self notifyDelegateForToken: _authToken withError: errorReason];
 }
 
+- (NSString *)accessToken
+{
+    return _authToken.authenticationToken;
+}
+
 - (void) sendFacebookRequest: (NSDictionary*) allParams
 {
     NSAutoreleasePool *pool = [NSAutoreleasePool new];

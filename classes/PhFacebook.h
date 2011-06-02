@@ -19,6 +19,7 @@
     PhWebViewController *_webViewController;
     PhAuthenticationToken *_authToken;
     NSString *_permissions;
+    dispatch_queue_t queue;
 }
 
 - (id) initWithApplicationID: (NSString*) appID delegate: (id) delegate;

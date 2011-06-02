@@ -11,6 +11,7 @@
 #import "PhAuthenticationToken.h"
 #import "PhFacebook_URLs.h"
 #import "Debug.h"
+#import <dispatch/dispatch.h>
 
 #define kFBStoreAccessToken @"FBAStoreccessToken"
 #define kFBStoreTokenExpiry @"FBStoreTokenExpiry"
@@ -30,6 +31,8 @@
         _webViewController = nil;
         _authToken = nil;
         _permissions = nil;
+        queue = dispatch_queue_create("com.phfacebook.requests", 0);
+
     }
     DebugLog(@"Initialized with AppID '%@'", _appID);
 
@@ -41,6 +44,7 @@
     [_appID release];
     [_webViewController release];
     [_authToken release];
+    dispatch_release(queue);
     [super dealloc];
 }
 
@@ -145,52 +149,43 @@
 	[self notifyDelegateForToken: _authToken withError: errorReason];
 }
 
-- (void) sendFacebookRequest: (NSDictionary*) allParams
-{
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
-
-    if (_authToken)
-    {
-        NSString *request = [allParams objectForKey: @"request"];
-        NSString *str = [NSString stringWithFormat: kFBGraphApiURL, request, _authToken.authenticationToken];
-        
-        NSDictionary *params = [allParams objectForKey:@"params"];
-        if (params != nil) 
-        {
-            NSMutableString *strWithParams = [NSMutableString stringWithString: str];
-            for (NSString *p in [params allKeys]) 
-                [strWithParams appendFormat: @"&%@=%@", p, [params objectForKey: p]];
-            str = strWithParams;
-        }
-        
-        NSURLRequest *req = [NSURLRequest requestWithURL: [NSURL URLWithString: str]];
-        NSURLResponse *response = nil;
-        NSError *error = nil;
-        NSData *data = [NSURLConnection sendSynchronousRequest: req returningResponse: &response error: &error];
-
-        if ([_delegate respondsToSelector: @selector(requestResult:)])
-        {
-            NSString *str = [[NSString alloc] initWithBytesNoCopy: (void*)[data bytes] length: [data length] encoding:NSASCIIStringEncoding freeWhenDone: NO];
-
-            NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:
-                str, @"result",
-                request, @"request",
-                self, @"sender",
-                nil];
-            [_delegate performSelectorOnMainThread:@selector(requestResult:) withObject: result waitUntilDone:YES];
-            [str release];
-        }
-    }
-    [pool drain];
-}
-
 - (void) sendRequest: (NSString*) request params: (NSDictionary*) params;
 {
-    NSMutableDictionary *allParams = [NSMutableDictionary dictionaryWithObject: request forKey: @"request"];
-    if (params != nil)
-        [allParams setObject: params forKey: @"params"];
+    if (_authToken)
+    {        
+        dispatch_async(queue, ^{
 
-	[NSThread detachNewThreadSelector: @selector(sendFacebookRequest:) toTarget: self withObject: allParams];    
+            NSString *str = [NSString stringWithFormat: kFBGraphApiURL, request, _authToken.authenticationToken];
+            if (params != nil) 
+            {
+                NSMutableString *strWithParams = [NSMutableString stringWithString: str];
+                for (NSString *p in [params allKeys]) 
+                    [strWithParams appendFormat: @"&%@=%@", p, [params objectForKey: p]];
+                str = strWithParams;
+            }
+            
+            NSURLRequest *req = [NSURLRequest requestWithURL: [NSURL URLWithString: str]];
+            NSURLResponse *response = nil;
+            NSError *error = nil;
+            NSData *data = [NSURLConnection sendSynchronousRequest: req returningResponse: &response error: &error];
+            
+            if ([_delegate respondsToSelector: @selector(requestResult:)])
+            {
+                NSString *str = [[NSString alloc] initWithBytesNoCopy: (void*)[data bytes] length: [data length] encoding:NSASCIIStringEncoding freeWhenDone: NO];
+                
+                NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        str, @"result",
+                                        request, @"request",
+                                        data, @"raw",                                    
+                                        self, @"sender",
+                                        nil];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_delegate requestResult:result];
+                });
+                [str release];
+            }        
+        });
+    }
 }
 
 - (void) sendRequest: (NSString*) request

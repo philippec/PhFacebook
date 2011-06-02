@@ -15,6 +15,7 @@
 @synthesize request_label;
 @synthesize request_text;
 @synthesize result_text;
+@synthesize profile_picture;
 @synthesize send_request;
 @synthesize window;
 
@@ -54,6 +55,7 @@
         [self.request_text setEnabled: YES];
         [self.send_request setEnabled: YES];
         [self.result_text setEditable: YES];
+        [fb sendRequest:@"me/picture"];
     }
     else
     {
@@ -64,9 +66,17 @@
 
 - (void) requestResult: (NSDictionary*) result
 {
-    [self.send_request setEnabled: YES];
+    if([[result objectForKey:@"request"] isEqualTo:@"me/picture"])
+    {
+        NSImage *pic = [[NSImage alloc] initWithData:[result objectForKey:@"raw"]];
+        self.profile_picture.image = pic;
+        [pic release];
+        
+    } else {
+        [self.send_request setEnabled: YES];
+        [self.result_text setString: [NSString stringWithFormat: @"Request: {%@}\n%@", [result objectForKey: @"request"], [result objectForKey: @"result"]]];
+    }
 
-    [self.result_text setString: [NSString stringWithFormat: @"Request: {%@}\n%@", [result objectForKey: @"request"], [result objectForKey: @"result"]]];
 }
 
 - (void) willShowUINotification: (PhFacebook*) sender

@@ -175,6 +175,7 @@
             NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:
                 str, @"result",
                 request, @"request",
+                data, @"raw",                                    
                 self, @"sender",
                 nil];
             [_delegate performSelectorOnMainThread:@selector(requestResult:) withObject: result waitUntilDone:YES];

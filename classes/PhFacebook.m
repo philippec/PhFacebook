@@ -44,6 +44,7 @@
     [_appID release];
     [_webViewController release];
     [_authToken release];
+    dispatch_release(queue);
     [super dealloc];
 }
 

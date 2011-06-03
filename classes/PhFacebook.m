@@ -145,7 +145,7 @@
 	[self notifyDelegateForToken: _authToken withError: errorReason];
 }
 
-- (NSString *)accessToken
+- (NSString*) accessToken
 {
     return _authToken.authenticationToken;
 }

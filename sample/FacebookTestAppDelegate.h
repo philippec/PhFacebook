@@ -20,7 +20,6 @@
     NSImageView *profile_picture;
     NSButton *send_request;
     NSWindow *window;
-    
 }
 
 @property (assign) IBOutlet NSTextField *token_label;

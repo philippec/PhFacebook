@@ -157,22 +157,28 @@
     if (_authToken)
     {
         NSString *request = [allParams objectForKey: @"request"];
-        NSString *str = [NSString stringWithFormat: kFBGraphApiURL, request, _authToken.authenticationToken];
+        NSString *str;
+        BOOL postRequest = [[allParams objectForKey: @"postRequest"] boolValue];
                 
-        if([[allParams objectForKey:@"postRequest"] boolValue]) {
+        if (postRequest)
             str = [NSString stringWithFormat: kFBGraphApiPostURL, request];
-        }
+        else
+            str = [NSString stringWithFormat: kFBGraphApiGetURL, request, _authToken.authenticationToken];
+
         
-        NSDictionary *params = [allParams objectForKey:@"params"];
-        NSMutableString *strWithParams = [NSMutableString string];
+        NSDictionary *params = [allParams objectForKey: @"params"];
+        NSMutableString *strPostParams = nil;
         if (params != nil) 
         {
-            if([[allParams objectForKey:@"postRequest"] boolValue]) {
-                strWithParams = [NSMutableString stringWithFormat:@"access_token=%@", _authToken.authenticationToken];
+            if (postRequest)
+            {
+                strPostParams = [NSMutableString stringWithFormat: @"access_token=%@", _authToken.authenticationToken];
                 for (NSString *p in [params allKeys]) 
-                    [strWithParams appendFormat: @"&%@=%@", p, [params objectForKey: p]];
-            } else {
-                strWithParams = [NSMutableString stringWithString: str];
+                    [strPostParams appendFormat: @"&%@=%@", p, [params objectForKey: p]];
+            }
+            else
+            {
+                NSMutableString *strWithParams = [NSMutableString stringWithString: str];
                 for (NSString *p in [params allKeys]) 
                     [strWithParams appendFormat: @"&%@=%@", p, [params objectForKey: p]];
                 str = strWithParams;
@@ -181,11 +187,12 @@
         
         NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL: [NSURL URLWithString: str]];
         
-        if([[allParams objectForKey:@"postRequest"] boolValue]) {
-            NSData *requestData = [NSData dataWithBytes: [strWithParams UTF8String] length: [strWithParams length]];
+        if (postRequest)
+        {
+            NSData *requestData = [NSData dataWithBytes: [strPostParams UTF8String] length: [strPostParams length]];
             [req setHTTPMethod: @"POST"];
             [req setHTTPBody: requestData];
-            [req setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+            [req setValue: @"application/x-www-form-urlencoded" forHTTPHeaderField: @"content-type"];
         }
         
         NSURLResponse *response = nil;
@@ -209,20 +216,20 @@
     [pool drain];
 }
 
-- (void) sendRequest: (NSString*) request params: (NSDictionary*) params post:(BOOL)postRequest
+- (void) sendRequest: (NSString*) request params: (NSDictionary*) params usePostRequest: (BOOL) postRequest
 {
     NSMutableDictionary *allParams = [NSMutableDictionary dictionaryWithObject: request forKey: @"request"];
     if (params != nil)
         [allParams setObject: params forKey: @"params"];
         
-    [allParams setObject:[NSNumber numberWithBool:postRequest] forKey:@"postRequest"];
+    [allParams setObject: [NSNumber numberWithBool: postRequest] forKey: @"postRequest"];
 
 	[NSThread detachNewThreadSelector: @selector(sendFacebookRequest:) toTarget: self withObject: allParams];    
 }
 
 - (void) sendRequest: (NSString*) request
 {
-    [self sendRequest: request params: nil post:NO];
+    [self sendRequest: request params: nil usePostRequest: NO];
 }
 
 #pragma mark Notifications

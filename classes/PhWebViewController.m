@@ -58,7 +58,12 @@
     NSString *url = [sender mainFrameURL];
     DebugLog(@"didCommitLoadForFrame: {%@}", url);
 
-    NSComparisonResult res = [url compare: kFBUIServerURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBUIServerURL length])];
+    NSString *urlWithoutSchema = [url substringFromIndex: 7];
+    if ([url hasPrefix: @"https://"])
+        urlWithoutSchema = [url substringFromIndex: 8];
+    
+    NSString *uiServerURLWithoutSchema = [kFBUIServerURL substringFromIndex: 7];
+    NSComparisonResult res = [urlWithoutSchema compare: uiServerURLWithoutSchema options: NSCaseInsensitiveSearch range: NSMakeRange(0, [uiServerURLWithoutSchema length])];
     if (res == NSOrderedSame)
         [self showUI];
 
@@ -90,7 +95,12 @@
     NSString *url = [sender mainFrameURL];
     DebugLog(@"didFinishLoadForFrame: {%@}", url);
 
-    NSComparisonResult res = [url compare: kFBLoginSuccessURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBLoginSuccessURL length])];
+    NSString *urlWithoutSchema = [url substringFromIndex: 7];
+    if ([url hasPrefix: @"https://"])
+        urlWithoutSchema = [url substringFromIndex: 8];
+    
+    NSString *loginSuccessURLWithoutSchema = [kFBLoginSuccessURL substringFromIndex: 7];
+    NSComparisonResult res = [urlWithoutSchema compare: loginSuccessURLWithoutSchema options: NSCaseInsensitiveSearch range: NSMakeRange(0, [loginSuccessURLWithoutSchema length])];
     if (res == NSOrderedSame)
     {
         NSString *accessToken = [self extractParameter: kFBAccessToken fromURL: url];

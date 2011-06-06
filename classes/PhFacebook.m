@@ -52,7 +52,10 @@
         // Save it to user defaults
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setObject: token.authenticationToken forKey: kFBStoreAccessToken];
-        [defaults setObject: token.expiry forKey: kFBStoreTokenExpiry];
+        if (token.expiry)
+            [defaults setObject: token.expiry forKey: kFBStoreTokenExpiry];
+        else
+            [defaults removeObjectForKey: kFBStoreTokenExpiry];
         [defaults setObject: token.permissions forKey: kFBStoreAccessPermissions];
 
         [result setObject: [NSNumber numberWithBool: YES] forKey: @"valid"];
@@ -94,9 +97,11 @@
         NSString *accessToken = [defaults stringForKey: kFBStoreAccessToken];
         NSDate *date = [defaults objectForKey: kFBStoreTokenExpiry];
         NSString *perms = [defaults stringForKey: kFBStoreAccessPermissions];
-        if (accessToken && date && perms)
+        if (accessToken && perms)
         {
-            NSTimeInterval seconds = [date timeIntervalSinceNow];
+            NSTimeInterval seconds = 0;
+            if (date)
+                seconds = [date timeIntervalSinceNow];
             // Do not notify delegate yet...
             [self setAccessToken: accessToken expires: seconds permissions: perms];
         }
@@ -105,7 +110,7 @@
     if ([_authToken.permissions isCaseInsensitiveLike: scope])
     {
         // We already have a token for these permissions; check if it has expired or not
-        if ([[_authToken.expiry laterDate: [NSDate date]] isEqual: _authToken.expiry])
+        if (_authToken.expiry == nil || [[_authToken.expiry laterDate: [NSDate date]] isEqual: _authToken.expiry])
             validToken = YES;
     }
 

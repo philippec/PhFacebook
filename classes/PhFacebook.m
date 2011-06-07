@@ -99,11 +99,8 @@
         NSString *perms = [defaults stringForKey: kFBStoreAccessPermissions];
         if (accessToken && perms)
         {
-            NSTimeInterval seconds = 0;
-            if (date)
-                seconds = [date timeIntervalSinceNow];
             // Do not notify delegate yet...
-            [self setAccessToken: accessToken expires: seconds permissions: perms];
+            [self setAccessToken: accessToken expires: [date timeIntervalSinceNow] permissions: perms];
         }
     }
 

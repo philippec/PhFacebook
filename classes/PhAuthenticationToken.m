@@ -20,7 +20,8 @@
     if ((self == [super init]))
     {
         self.authenticationToken = token;
-        self.expiry = [NSDate dateWithTimeIntervalSinceNow: seconds];
+        if (seconds > 0)
+            self.expiry = [NSDate dateWithTimeIntervalSinceNow: seconds];
         self.permissions = perms;
     }
 

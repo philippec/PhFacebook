@@ -57,11 +57,13 @@
 {
     NSString *url = [sender mainFrameURL];
     DebugLog(@"didCommitLoadForFrame: {%@}", url);
-
+    
     NSComparisonResult res = [url compare: kFBUIServerURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBUIServerURL length])];
-    if (res == NSOrderedSame)
+    NSComparisonResult resHTTPS = [url compare: kFBUIServerURLHTTPS options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBUIServerURLHTTPS length])];
+    
+    if (res == NSOrderedSame || resHTTPS == NSOrderedSame)
         [self showUI];
-
+    
 #ifdef ALWAYS_SHOW_UI
     [self showUI];
 #endif
@@ -89,23 +91,25 @@
 {
     NSString *url = [sender mainFrameURL];
     DebugLog(@"didFinishLoadForFrame: {%@}", url);
-
+    
     NSComparisonResult res = [url compare: kFBLoginSuccessURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBLoginSuccessURL length])];
-    if (res == NSOrderedSame)
+    NSComparisonResult resHTTPS = [url compare: kFBLoginSuccessURLHTTPS options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBLoginSuccessURLHTTPS length])];
+    
+    if (res == NSOrderedSame || resHTTPS == NSOrderedSame)
     {
         NSString *accessToken = [self extractParameter: kFBAccessToken fromURL: url];
         NSString *tokenExpires = [self extractParameter: kFBExpiresIn fromURL: url];
         NSString *errorReason = [self extractParameter: kFBErrorReason fromURL: url];
-
+        
         [self.window orderOut: self];
-
+        
         [parent setAccessToken: accessToken expires: [tokenExpires floatValue] permissions: self.permissions error: errorReason];
     }
-
+    
     res = [url compare: kFBLoginURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBLoginURL length])];
     if (res == NSOrderedSame)
         [self showUI];
-
+    
 #ifdef ALWAYS_SHOW_UI
     [self showUI];
 #endif

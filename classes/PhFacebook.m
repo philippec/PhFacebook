@@ -149,7 +149,7 @@
 
 - (NSString*) accessToken
 {
-    return _authToken.authenticationToken;
+    return [[_authToken.authenticationToken copy] autorelease];
 }
 
 - (void) sendFacebookRequest: (NSDictionary*) allParams

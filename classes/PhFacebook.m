@@ -52,7 +52,10 @@
         // Save it to user defaults
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setObject: token.authenticationToken forKey: kFBStoreAccessToken];
-        [defaults setObject: token.expiry forKey: kFBStoreTokenExpiry];
+        if (token.expiry)
+            [defaults setObject: token.expiry forKey: kFBStoreTokenExpiry];
+        else
+            [defaults removeObjectForKey: kFBStoreTokenExpiry];
         [defaults setObject: token.permissions forKey: kFBStoreAccessPermissions];
 
         [result setObject: [NSNumber numberWithBool: YES] forKey: @"valid"];
@@ -94,18 +97,17 @@
         NSString *accessToken = [defaults stringForKey: kFBStoreAccessToken];
         NSDate *date = [defaults objectForKey: kFBStoreTokenExpiry];
         NSString *perms = [defaults stringForKey: kFBStoreAccessPermissions];
-        if (accessToken && date && perms)
+        if (accessToken && perms)
         {
-            NSTimeInterval seconds = [date timeIntervalSinceNow];
             // Do not notify delegate yet...
-            [self setAccessToken: accessToken expires: seconds permissions: perms];
+            [self setAccessToken: accessToken expires: [date timeIntervalSinceNow] permissions: perms];
         }
     }
 
     if ([_authToken.permissions isCaseInsensitiveLike: scope])
     {
         // We already have a token for these permissions; check if it has expired or not
-        if ([[_authToken.expiry laterDate: [NSDate date]] isEqual: _authToken.expiry])
+        if (_authToken.expiry == nil || [[_authToken.expiry laterDate: [NSDate date]] isEqual: _authToken.expiry])
             validToken = YES;
     }
 
@@ -145,9 +147,9 @@
 	[self notifyDelegateForToken: _authToken withError: errorReason];
 }
 
-- (NSString *)accessToken
+- (NSString*) accessToken
 {
-    return _authToken.authenticationToken;
+    return [[_authToken.authenticationToken copy] autorelease];
 }
 
 - (void) sendFacebookRequest: (NSDictionary*) allParams
@@ -157,18 +159,44 @@
     if (_authToken)
     {
         NSString *request = [allParams objectForKey: @"request"];
-        NSString *str = [NSString stringWithFormat: kFBGraphApiURL, request, _authToken.authenticationToken];
+        NSString *str;
+        BOOL postRequest = [[allParams objectForKey: @"postRequest"] boolValue];
+                
+        if (postRequest)
+            str = [NSString stringWithFormat: kFBGraphApiPostURL, request];
+        else
+            str = [NSString stringWithFormat: kFBGraphApiGetURL, request, _authToken.authenticationToken];
+
         
-        NSDictionary *params = [allParams objectForKey:@"params"];
+        NSDictionary *params = [allParams objectForKey: @"params"];
+        NSMutableString *strPostParams = nil;
         if (params != nil) 
         {
-            NSMutableString *strWithParams = [NSMutableString stringWithString: str];
-            for (NSString *p in [params allKeys]) 
-                [strWithParams appendFormat: @"&%@=%@", p, [params objectForKey: p]];
-            str = strWithParams;
+            if (postRequest)
+            {
+                strPostParams = [NSMutableString stringWithFormat: @"access_token=%@", _authToken.authenticationToken];
+                for (NSString *p in [params allKeys]) 
+                    [strPostParams appendFormat: @"&%@=%@", p, [params objectForKey: p]];
+            }
+            else
+            {
+                NSMutableString *strWithParams = [NSMutableString stringWithString: str];
+                for (NSString *p in [params allKeys]) 
+                    [strWithParams appendFormat: @"&%@=%@", p, [params objectForKey: p]];
+                str = strWithParams;
+            }
         }
         
-        NSURLRequest *req = [NSURLRequest requestWithURL: [NSURL URLWithString: str]];
+        NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL: [NSURL URLWithString: str]];
+        
+        if (postRequest)
+        {
+            NSData *requestData = [NSData dataWithBytes: [strPostParams UTF8String] length: [strPostParams length]];
+            [req setHTTPMethod: @"POST"];
+            [req setHTTPBody: requestData];
+            [req setValue: @"application/x-www-form-urlencoded" forHTTPHeaderField: @"content-type"];
+        }
+        
         NSURLResponse *response = nil;
         NSError *error = nil;
         NSData *data = [NSURLConnection sendSynchronousRequest: req returningResponse: &response error: &error];
@@ -180,6 +208,7 @@
             NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:
                 str, @"result",
                 request, @"request",
+                data, @"raw",                                    
                 self, @"sender",
                 nil];
             [_delegate performSelectorOnMainThread:@selector(requestResult:) withObject: result waitUntilDone:YES];
@@ -189,18 +218,20 @@
     [pool drain];
 }
 
-- (void) sendRequest: (NSString*) request params: (NSDictionary*) params;
+- (void) sendRequest: (NSString*) request params: (NSDictionary*) params usePostRequest: (BOOL) postRequest
 {
     NSMutableDictionary *allParams = [NSMutableDictionary dictionaryWithObject: request forKey: @"request"];
     if (params != nil)
         [allParams setObject: params forKey: @"params"];
+        
+    [allParams setObject: [NSNumber numberWithBool: postRequest] forKey: @"postRequest"];
 
 	[NSThread detachNewThreadSelector: @selector(sendFacebookRequest:) toTarget: self withObject: allParams];    
 }
 
 - (void) sendRequest: (NSString*) request
 {
-    [self sendRequest: request params: nil];
+    [self sendRequest: request params: nil usePostRequest: NO];
 }
 
 #pragma mark Notifications

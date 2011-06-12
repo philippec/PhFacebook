@@ -57,11 +57,14 @@
 {
     NSString *url = [sender mainFrameURL];
     DebugLog(@"didCommitLoadForFrame: {%@}", url);
+
+    NSString *urlWithoutSchema = [url substringFromIndex: [@"http://" length]];
+    if ([url hasPrefix: @"https://"])
+        urlWithoutSchema = [url substringFromIndex: [@"https://" length]];
     
-    NSComparisonResult res = [url compare: kFBUIServerURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBUIServerURL length])];
-    NSComparisonResult resHTTPS = [url compare: kFBUIServerURLHTTPS options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBUIServerURLHTTPS length])];
-    
-    if (res == NSOrderedSame || resHTTPS == NSOrderedSame)
+    NSString *uiServerURLWithoutSchema = [kFBUIServerURL substringFromIndex: [@"http://" length]];
+    NSComparisonResult res = [urlWithoutSchema compare: uiServerURLWithoutSchema options: NSCaseInsensitiveSearch range: NSMakeRange(0, [uiServerURLWithoutSchema length])];
+    if (res == NSOrderedSame)
         [self showUI];
     
 #ifdef ALWAYS_SHOW_UI
@@ -91,11 +94,14 @@
 {
     NSString *url = [sender mainFrameURL];
     DebugLog(@"didFinishLoadForFrame: {%@}", url);
+
+    NSString *urlWithoutSchema = [url substringFromIndex: [@"http://" length]];
+    if ([url hasPrefix: @"https://"])
+        urlWithoutSchema = [url substringFromIndex: [@"https://" length]];
     
-    NSComparisonResult res = [url compare: kFBLoginSuccessURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBLoginSuccessURL length])];
-    NSComparisonResult resHTTPS = [url compare: kFBLoginSuccessURLHTTPS options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBLoginSuccessURLHTTPS length])];
-    
-    if (res == NSOrderedSame || resHTTPS == NSOrderedSame)
+    NSString *loginSuccessURLWithoutSchema = [kFBLoginSuccessURL substringFromIndex: 7];
+    NSComparisonResult res = [urlWithoutSchema compare: loginSuccessURLWithoutSchema options: NSCaseInsensitiveSearch range: NSMakeRange(0, [loginSuccessURLWithoutSchema length])];
+    if (res == NSOrderedSame)
     {
         NSString *accessToken = [self extractParameter: kFBAccessToken fromURL: url];
         NSString *tokenExpires = [self extractParameter: kFBExpiresIn fromURL: url];

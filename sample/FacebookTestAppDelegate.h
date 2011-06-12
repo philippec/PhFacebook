@@ -17,6 +17,7 @@
     NSTextField *request_label;
     NSTextField *request_text;
     NSTextView *result_text;
+    NSImageView *profile_picture;
     NSButton *send_request;
     NSWindow *window;
 }
@@ -25,6 +26,7 @@
 @property (assign) IBOutlet NSTextField *request_label;
 @property (assign) IBOutlet NSTextField *request_text;
 @property (assign) IBOutlet NSTextView *result_text;
+@property (assign) IBOutlet NSImageView *profile_picture;
 @property (assign) IBOutlet NSButton *send_request;
 @property (assign) IBOutlet NSWindow *window;
 

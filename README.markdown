@@ -73,4 +73,5 @@ Tips and Tricks
 ---------------
 
 * Embedding a framework is easier if you set up a common build folder in Xcode -> Preferences -> Building -> Customized location.
+* Linking frameworks can sometimes be a black art. You may have to add `@loader_path/../Frameworks` to the "Runpath search paths" in Xcode (thanks to Oscar Del Ben for the tip).
 * You can #define ALWAYS_SHOW_UI in PhWebViewController.m to help you debug the framework, since by default the framework tries to hide UI as much as possible. 

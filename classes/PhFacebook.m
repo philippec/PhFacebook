@@ -242,4 +242,10 @@
         [_delegate performSelectorOnMainThread:@selector(willShowUINotification:) withObject: self waitUntilDone:YES];
 }
 
+- (void) didDismissUI
+{
+    if ([_delegate respondsToSelector:@selector(didDismissUI:)])
+        [_delegate performSelectorOnMainThread:@selector(didDismissUI:) withObject: self waitUntilDone:YES];
+}
+
 @end

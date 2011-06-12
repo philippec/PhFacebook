@@ -39,7 +39,13 @@
 {
     NSBundle *bundle = [NSBundle bundleForClass: [PhFacebook class]];
     self.window.title = [bundle localizedStringForKey: @"FBAuthWindowTitle" value: @"" table: nil];
-    self.cancelButton.title = [bundle localizedStringForKey: @"FBAuthWindowCancel" value: @"" table: nil];;
+    self.cancelButton.title = [bundle localizedStringForKey: @"FBAuthWindowCancel" value: @"" table: nil];
+    self.window.delegate = self;
+}
+
+- (void)windowWillClose:(NSNotification *)notification
+{
+    [self cancel:nil];
 }
 
 #pragma mark Delegate
@@ -119,6 +125,12 @@
 #ifdef ALWAYS_SHOW_UI
     [self showUI];
 #endif
+}
+
+- (IBAction) cancel: (id) sender
+{
+    [parent performSelector:@selector(didDismissUI)];
+    [self.window orderOut:nil];
 }
 
 @end

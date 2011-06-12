@@ -41,6 +41,7 @@ How-to-use
             - (void) requestResult: (NSDictionary*) result;
             @optional
             - (void) willShowUINotification: (PhFacebook*) sender;
+            - (void) didDismissUI: (PhFacebook*) sender;
       These methods will be called by PhFacebook when an authorization token was requested or an API request was made.
       More information below.
     * __See the sample application if you have any issues__.

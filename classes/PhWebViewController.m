@@ -41,9 +41,10 @@
     self.window.title = [bundle localizedStringForKey: @"FBAuthWindowTitle" value: @"" table: nil];
     self.cancelButton.title = [bundle localizedStringForKey: @"FBAuthWindowCancel" value: @"" table: nil];
     self.window.delegate = self;
+    self.window.level = NSFloatingWindowLevel;
 }
 
-- (void)windowWillClose:(NSNotification *)notification
+- (void) windowWillClose: (NSNotification *) notification
 {
     [self cancel:nil];
 }
@@ -129,8 +130,8 @@
 
 - (IBAction) cancel: (id) sender
 {
-    [parent performSelector:@selector(didDismissUI)];
-    [self.window orderOut:nil];
+    [parent performSelector: @selector(didDismissUI)];
+    [self.window orderOut: nil];
 }
 
 @end

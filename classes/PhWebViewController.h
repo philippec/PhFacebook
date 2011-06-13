@@ -12,7 +12,7 @@
 
 @class PhFacebook;
 
-@interface PhWebViewController : NSObject
+@interface PhWebViewController : NSObject <NSWindowDelegate>
 {
     IBOutlet NSWindow *window;
     IBOutlet WebView *webView;
@@ -27,5 +27,7 @@
 @property (assign) IBOutlet NSButton *cancelButton;
 @property (assign) PhFacebook *parent;
 @property (nonatomic, retain) NSString *permissions;
+
+- (IBAction) cancel: (id) sender;
 
 @end

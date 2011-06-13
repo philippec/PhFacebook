@@ -38,6 +38,7 @@
 - (NSString*) accessToken;
 
 - (void) webViewWillShowUI;
+- (void) didDismissUI;
 
 @end
 
@@ -49,5 +50,6 @@
 
 @optional
 - (void) willShowUINotification: (PhFacebook*) sender;
+- (void) didDismissUI: (PhFacebook*) sender;
 
 @end

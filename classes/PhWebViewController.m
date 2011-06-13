@@ -39,7 +39,8 @@
 {
     NSBundle *bundle = [NSBundle bundleForClass: [PhFacebook class]];
     self.window.title = [bundle localizedStringForKey: @"FBAuthWindowTitle" value: @"" table: nil];
-    self.cancelButton.title = [bundle localizedStringForKey: @"FBAuthWindowCancel" value: @"" table: nil];;
+    self.cancelButton.title = [bundle localizedStringForKey: @"FBAuthWindowCancel" value: @"" table: nil];
+    self.window.level = NSFloatingWindowLevel;
 }
 
 #pragma mark Delegate

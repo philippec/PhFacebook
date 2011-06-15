@@ -239,13 +239,13 @@
 - (void) webViewWillShowUI
 {
     if ([_delegate respondsToSelector: @selector(willShowUINotification:)])
-        [_delegate performSelectorOnMainThread:@selector(willShowUINotification:) withObject: self waitUntilDone:YES];
+        [_delegate performSelectorOnMainThread: @selector(willShowUINotification:) withObject: self waitUntilDone: YES];
 }
 
 - (void) didDismissUI
 {
-    if ([_delegate respondsToSelector:@selector(didDismissUI:)])
-        [_delegate performSelectorOnMainThread:@selector(didDismissUI:) withObject: self waitUntilDone:YES];
+    if ([_delegate respondsToSelector: @selector(didDismissUI:)])
+        [_delegate performSelectorOnMainThread: @selector(didDismissUI:) withObject: self waitUntilDone: YES];
 }
 
 @end

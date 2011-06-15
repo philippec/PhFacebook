@@ -44,9 +44,9 @@
     self.window.level = NSFloatingWindowLevel;
 }
 
-- (void) windowWillClose: (NSNotification *) notification
+- (void) windowWillClose: (NSNotification*) notification
 {
-    [self cancel:nil];
+    [self cancel: nil];
 }
 
 #pragma mark Delegate

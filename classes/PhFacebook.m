@@ -78,6 +78,15 @@
     _authToken = nil;
 }
 
+-(void) invalidateCachedToken
+{
+    [self clearToken];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults removeObjectForKey:kFBStoreAccessToken];
+    [defaults removeObjectForKey: kFBStoreTokenExpiry];
+    [defaults removeObjectForKey: kFBStoreAccessPermissions];
+}
+
 - (void) setAccessToken: (NSString*) accessToken expires: (NSTimeInterval) tokenExpires permissions: (NSString*) perms
 {
     [self clearToken];
@@ -125,7 +134,17 @@
             authURL = [NSString stringWithFormat: kFBAuthorizeWithScopeURL, _appID, kFBLoginSuccessURL, scope];
         else
             authURL = [NSString stringWithFormat: kFBAuthorizeURL, _appID, kFBLoginSuccessURL];
-
+      
+        if ([_delegate respondsToSelector: @selector(needsAuthentication:forPermissions:)]) 
+        {
+            if ([_delegate needsAuthentication:authURL forPermissions:scope]) 
+            {
+                // if needsAuthentication returns YES,
+                // we will let delegate handle the authentication UI
+                return;
+            }
+        }
+      
         // Retrieve token from web page
         if (_webViewController == nil)
         {

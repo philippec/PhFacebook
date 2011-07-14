@@ -33,6 +33,7 @@
 - (void) sendRequest: (NSString*) request;
 - (void) sendRequest: (NSString*) request params: (NSDictionary*) params usePostRequest: (BOOL) postRequest;
 
+- (void) invalidateCachedToken;
 
 - (void) setAccessToken: (NSString*) accessToken expires: (NSTimeInterval) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason;
 - (NSString*) accessToken;
@@ -49,6 +50,10 @@
 - (void) requestResult: (NSDictionary*) result;
 
 @optional
+// needsAuthentication is called before showing authentication WebView
+// if it returns true, default login window will not be shown and
+// application is responsible for authentication UI
+- (BOOL) needsAuthentication: (NSString*) authURL forPermissions: (NSString*) permissions; 
 - (void) willShowUINotification: (PhFacebook*) sender;
 - (void) didDismissUI: (PhFacebook*) sender;
 

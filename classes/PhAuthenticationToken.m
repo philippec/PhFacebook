@@ -17,7 +17,8 @@
 
 - (id) initWithToken: (NSString*) token secondsToExpiry: (NSTimeInterval) seconds permissions: (NSString*) perms
 {
-    if ((self == [super init]))
+    
+    if ((self = [super init]))
     {
         self.authenticationToken = token;
         if (seconds != 0)

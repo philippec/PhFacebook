@@ -50,10 +50,10 @@
 - (void) requestResult: (NSDictionary*) result;
 
 @optional
-// needsAuthentication is called before showing authentication WebView
-// if it returns true, default login window will not be shown and
-// application is responsible for authentication UI
-- (BOOL) needsAuthentication: (NSString*) authURL forPermissions: (NSString*) permissions; 
+// needsAuthentication is called before showing the authentication WebView.
+// If it returns YES, the default login window will not be shown and
+// your application is responsible for the authentication UI.
+- (BOOL) needsAuthentication: (NSString*) authenticationURL forPermissions: (NSString*) permissions; 
 - (void) willShowUINotification: (PhFacebook*) sender;
 - (void) didDismissUI: (PhFacebook*) sender;
 

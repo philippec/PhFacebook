@@ -137,10 +137,9 @@
       
         if ([_delegate respondsToSelector: @selector(needsAuthentication:forPermissions:)]) 
         {
-            if ([_delegate needsAuthentication:authURL forPermissions:scope]) 
+            if ([_delegate needsAuthentication: authURL forPermissions: scope]) 
             {
-                // if needsAuthentication returns YES,
-                // we will let delegate handle the authentication UI
+                // If needsAuthentication returns YES, let the delegate handle the authentication UI
                 return;
             }
         }

@@ -22,7 +22,7 @@
 
 - (id) initWithApplicationID: (NSString*) appID delegate: (id) delegate
 {
-    if ((self == [super init]))
+    if ((self = [super init]))
     {
         if (appID)
             _appID = [[NSString stringWithString: appID] retain];

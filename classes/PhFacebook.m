@@ -30,8 +30,8 @@
         _webViewController = nil;
         _authToken = nil;
         _permissions = nil;
+        DebugLog(@"Initialized with AppID '%@'", _appID);
     }
-    DebugLog(@"Initialized with AppID '%@'", _appID);
 
     return self;
 }

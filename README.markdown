@@ -19,9 +19,9 @@ How-to-use
 
 1.  Set your Facebook Application Type
 
-    * Go to your [Facebook application page](http://www.facebook.com/developers/apps.php?app_id=YOUR_APP_ID).
-    * Select "Edit Settings".
-    * In the Mobile section, set the Application Type to "Native application".
+    * Go to your [Facebook application page](https://developers.facebook.com/apps/).
+    * Select your application in the left-hand column (if you have more than one application).
+    * In the Summary section, note the "App ID/API Key". This is `YOUR_APPLICATION_ID`, used in section 3.
 
 2.  Build PhFacebook.framework
 
@@ -75,4 +75,4 @@ Tips and Tricks
 
 * Embedding a framework is easier if you set up a common build folder in Xcode -> Preferences -> Building -> Customized location.
 * Linking frameworks can sometimes be a black art. You may have to add `@loader_path/../Frameworks` to the "Runpath search paths" in Xcode (thanks to Oscar Del Ben for the tip).
-* You can #define ALWAYS_SHOW_UI in PhWebViewController.m to help you debug the framework, since by default the framework tries to hide UI as much as possible. 
+* You can `#define ALWAYS_SHOW_UI` in PhWebViewController.m to help you debug the framework, since by default the framework tries to hide UI as much as possible. 

@@ -118,10 +118,11 @@
 
         [parent setAccessToken: accessToken expires: [tokenExpires floatValue] permissions: self.permissions error: errorReason];
     }
-
-    res = [url compare: kFBLoginURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBLoginURL length])];
-    if (res == NSOrderedSame)
+    else
+    {
+        // If access token is not retrieved, UI is shown to allow user to login/authorize
         [self showUI];
+    }
 
 #ifdef ALWAYS_SHOW_UI
     [self showUI];

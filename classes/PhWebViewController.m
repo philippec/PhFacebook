@@ -117,11 +117,10 @@
         [self.window orderOut: self];
 
         [parent setAccessToken: accessToken expires: [tokenExpires floatValue] permissions: self.permissions error: errorReason];
-    }
-
-    res = [url compare: kFBLoginURL options: NSCaseInsensitiveSearch range: NSMakeRange(0, [kFBLoginURL length])];
-    if (res == NSOrderedSame)
+    }else{
+        //If access token not retrieved, open UI
         [self showUI];
+    }
 
 #ifdef ALWAYS_SHOW_UI
     [self showUI];

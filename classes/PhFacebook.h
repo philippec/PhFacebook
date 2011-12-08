@@ -33,6 +33,10 @@
 - (void) sendRequest: (NSString*) request;
 - (void) sendRequest: (NSString*) request params: (NSDictionary*) params usePostRequest: (BOOL) postRequest;
 
+// query: the query to send to FQL API, e.g. "SELECT uid, sex, name from user WHERE uid = me()"
+// see http://developers.facebook.com/docs/reference/fql/
+- (void) sendFQLRequest:(NSString*) query;
+
 - (void) invalidateCachedToken;
 
 - (void) setAccessToken: (NSString*) accessToken expires: (NSTimeInterval) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason;

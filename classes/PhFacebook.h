@@ -32,7 +32,6 @@
 // see http://developers.facebook.com/docs/api
 - (void) sendRequest: (NSString*) request;
 - (void) sendRequest: (NSString*) request params: (NSDictionary*) params usePostRequest: (BOOL) postRequest;
-- (void) sendFQLRequest:(NSString*) query;
 
 - (void) invalidateCachedToken;
 

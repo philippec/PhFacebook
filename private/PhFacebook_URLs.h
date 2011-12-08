@@ -13,6 +13,7 @@
 
 #define kFBAuthorizeWithScopeURL @"https://graph.facebook.com/oauth/authorize?client_id=%@&redirect_uri=%@&scope=%@&type=user_agent&display=popup"
 
+#define kFBLoginURL @"https://www.facebook.com/login.php"
 #define kFBLoginSuccessURL @"http://www.facebook.com/connect/login_success.html"
 
 #define kFBUIServerURL @"http://www.facebook.com/connect/uiserver.php"
@@ -24,5 +25,3 @@
 #define kFBGraphApiGetURL @"https://graph.facebook.com/%@?access_token=%@"
 
 #define kFBGraphApiPostURL @"https://graph.facebook.com/%@"
-
-#define kFBGraphApiFqlURL @"https://api.facebook.com/method/fql.query?query=%@&access_token=%@&format=json"

@@ -252,6 +252,42 @@
     [self sendRequest: request params: nil usePostRequest: NO];
 }
 
+- (void) sendFacebookFQLRequest: (NSString*) query
+{
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+
+    if (_authToken)
+    {
+        NSString *str = [NSString stringWithFormat: kFBGraphApiFqlURL, [query stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], _authToken.authenticationToken];
+
+        NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL: [NSURL URLWithString: str]];
+
+        NSURLResponse *response = nil;
+        NSError *error = nil;
+        NSData *data = [NSURLConnection sendSynchronousRequest: req returningResponse: &response error: &error];
+
+        if ([_delegate respondsToSelector: @selector(requestResult:)])
+        {
+            NSString *str = [[NSString alloc] initWithBytesNoCopy: (void*)[data bytes] length: [data length] encoding:NSASCIIStringEncoding freeWhenDone: NO];
+
+            NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    str, @"result",
+                                    query, @"request",
+                                    data, @"raw",
+                                    self, @"sender",
+                                    nil];
+            [_delegate performSelectorOnMainThread:@selector(requestResult:) withObject: result waitUntilDone:YES];
+            [str release];
+        }
+    }
+    [pool drain];
+}
+
+- (void) sendFQLRequest: (NSString*) query
+{
+    [NSThread detachNewThreadSelector: @selector(sendFacebookFQLRequest:) toTarget: self withObject: query];
+}
+
 #pragma mark Notifications
 
 - (void) webViewWillShowUI

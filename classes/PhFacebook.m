@@ -181,9 +181,18 @@
         BOOL postRequest = [[allParams objectForKey: @"postRequest"] boolValue];
                 
         if (postRequest)
+        {
             str = [NSString stringWithFormat: kFBGraphApiPostURL, request];
+        }
         else
-            str = [NSString stringWithFormat: kFBGraphApiGetURL, request, _authToken.authenticationToken];
+        {
+            // Check if request already has optional parameters
+            NSString *formatStr = kFBGraphApiGetURL;
+            NSRange rng = [request rangeOfString:@"?"];
+            if (rng.length > 0)
+                formatStr = kFBGraphApiGetURLWithParams;
+            str = [NSString stringWithFormat: formatStr, request, _authToken.authenticationToken];
+        }
 
         
         NSDictionary *params = [allParams objectForKey: @"params"];

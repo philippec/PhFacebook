@@ -22,6 +22,7 @@
 #define kFBErrorReason @"error_description="
 
 #define kFBGraphApiGetURL @"https://graph.facebook.com/%@?access_token=%@"
+#define kFBGraphApiGetURLWithParams @"https://graph.facebook.com/%@&access_token=%@"
 
 #define kFBGraphApiPostURL @"https://graph.facebook.com/%@"
 

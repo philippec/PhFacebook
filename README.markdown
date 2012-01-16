@@ -25,11 +25,13 @@ How-to-use
 
 2.  Build PhFacebook.framework
 
-    * Open "PhFacebook.xcodeproj" and click "Build".
-    * Select "PhFacebook.framework" in the Finder.
+    * Open "PhFacebook.xcodeproj" and "Build for Archiving" in the Product -> Build menu. This should build both the Debug and Release version. If it does not, check your Build Schemes in Product -> Edit Scheme…
+    * Select "PhFacebook.framework" in the Finder. It should be in the "Release" folder; you probably don't want to embed the Debug version.
     * Drag it to your "Frameworks" folder in your Project list and add it to the appropriate target.
+    * In your appropriate target, under "Build Settings", select "Runpath Search Paths" in the "Linking" category, and enter "@loader_path/../Frameworks" (without the quotes). This step is essential for linking, as the Framework is built with a "@rpath" search path, which will be replaced at runtime by your application.
     * In your appropriate target, add a "Copy" build phase. Set its destination to "Frameworks".
     * Drag "PhFacebook.framework" to this Copy build phase to ensure it is embedded in your application.
+    * Verify that you can build and run your application and there are no linker or runtime errors.
 
 3.  Prepare to use PhFacebook.framework
 

@@ -27,3 +27,6 @@
 #define kFBGraphApiPostURL @"https://graph.facebook.com/%@"
 
 #define kFBGraphApiFqlURL @"https://api.facebook.com/method/fql.query?query=%@&access_token=%@&format=json"
+
+#define kFBURL @"http://facebook.com"
+#define kFBSecureURL @"https://facebook.com"

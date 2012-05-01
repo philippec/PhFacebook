@@ -85,6 +85,16 @@
     [defaults removeObjectForKey:kFBStoreAccessToken];
     [defaults removeObjectForKey: kFBStoreTokenExpiry];
     [defaults removeObjectForKey: kFBStoreAccessPermissions];
+
+    // Allow logout by clearing the left-over cookies (issue #35)
+    NSURL *facebookUrl = [NSURL URLWithString:kFBURL];
+    NSURL *facebookSecureUrl = [NSURL URLWithString:kFBSecureURL];
+
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    NSArray *cookies = [[cookieStorage cookiesForURL: facebookUrl] arrayByAddingObjectsFromArray:[cookieStorage cookiesForURL: facebookSecureUrl]];
+
+    for (NSHTTPCookie *cookie in cookies)
+        [cookieStorage deleteCookie: cookie];
 }
 
 - (void) setAccessToken: (NSString*) accessToken expires: (NSTimeInterval) tokenExpires permissions: (NSString*) perms

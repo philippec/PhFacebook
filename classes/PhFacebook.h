@@ -11,6 +11,9 @@
 @class PhWebViewController;
 @class PhAuthenticationToken;
 
+/** Completion handler blocks receive (as the delegate does) a custom NSDictionary result object. */
+typedef void (^PhCompletionBlock)(NSDictionary *result);
+
 @interface PhFacebook : NSObject
 {
 @private
@@ -21,25 +24,33 @@
     NSString *_permissions;
 }
 
+- (id) initWithApplicationID: (NSString*) appID;
 - (id) initWithApplicationID: (NSString*) appID delegate: (id) delegate;
 
 // permissions: an array of required permissions
 //              see http://developers.facebook.com/docs/authentication/permissions
 // canCache: save and retrieve token locally if not expired
+// If no block is specified, the delegate will be notified instead.
 - (void) getAccessTokenForPermissions: (NSArray*) permissions cached: (BOOL) canCache;
+- (void) getAccessTokenForPermissions: (NSArray*) permissions cached: (BOOL) canCache withCompletionBlock:(PhCompletionBlock) block;
 
 // request: the short version of the Facebook Graph API, e.g. "me/feed"
 // see http://developers.facebook.com/docs/api
+// If no block is specified, the delegate will be notified instead.
 - (void) sendRequest: (NSString*) request;
+- (void) sendRequest: (NSString*) request withCompletionBlock:(PhCompletionBlock) block;
 - (void) sendRequest: (NSString*) request params: (NSDictionary*) params usePostRequest: (BOOL) postRequest;
+- (void) sendRequest: (NSString*) request params: (NSDictionary*) params usePostRequest: (BOOL) postRequest withCompletionBlock:(PhCompletionBlock) block;
 
 // query: the query to send to FQL API, e.g. "SELECT uid, sex, name from user WHERE uid = me()"
 // see http://developers.facebook.com/docs/reference/fql/
 - (void) sendFQLRequest: (NSString*) query;
+- (void) sendFQLRequest: (NSString*) query withCompletionBlock:(PhCompletionBlock) block;
 
 - (void) invalidateCachedToken;
 
 - (void) setAccessToken: (NSString*) accessToken expires: (NSTimeInterval) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason;
+- (void) setAccessToken: (NSString*) accessToken expires: (NSTimeInterval) tokenExpires permissions: (NSString*) perms error: (NSString*) errorReason withCompletionBlock: (PhCompletionBlock) block;
 - (NSString*) accessToken;
 
 - (void) webViewWillShowUI;

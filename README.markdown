@@ -7,6 +7,18 @@ Changes in this fork
 - added Completion blocks for both token retrieval and requests
 - added ARC compatibility
 
+Example with completion blocks:
+
+	fb = [[PhFacebook alloc] initWithApplicationID:@"XXXXXXXXX"];
+	[fb getAccessTokenForPermissions:@[@"publish_actions"] cached:NO withCompletionBlock:^(NSDictionary *result) {
+		[fb sendRequest:@"/me" withCompletionBlock:^(NSDictionary *result) {
+			NSLog(@"Got /me result: %@", result);
+		}];
+		[fb sendFQLRequest:@"SELECT uid, sex, name from user WHERE uid = me()" withCompletionBlock:^(NSDictionary *result) {
+			NSLog(@"Got FQL result: %@", result);
+		}];
+	}];
+
 Summary
 -------
 

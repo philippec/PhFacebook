@@ -1,8 +1,8 @@
 PhFacebook: easy-to-use MacOSX framework for the Facebook API
 =============================================================
 
-Changes in this for
--------------------
+Changes in this fork
+--------------------
 - added german translations
 - added Completion blocks for both token retrieval and requests
 - added ARC compatibility

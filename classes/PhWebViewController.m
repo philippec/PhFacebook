@@ -30,10 +30,6 @@
     return self;
 }
 
-- (void) dealloc
-{
-    [super dealloc];
-}
 
 - (void) awakeFromNib
 {
@@ -116,7 +112,11 @@
 
         [self.window orderOut: self];
 
-        [parent setAccessToken: accessToken expires: [tokenExpires floatValue] permissions: self.permissions error: errorReason];
+        if (self.tokenResultCompletionHandler) {
+			[parent setAccessToken: accessToken expires: [tokenExpires floatValue] permissions: self.permissions error: errorReason withCompletionBlock:self.tokenResultCompletionHandler];
+		} else {
+			[parent setAccessToken: accessToken expires: [tokenExpires floatValue] permissions: self.permissions error: errorReason];
+		}
     }
     else
     {

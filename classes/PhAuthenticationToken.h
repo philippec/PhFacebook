@@ -16,9 +16,9 @@
     NSString *_permissions;
 }
 
-@property (nonatomic, retain) NSString *authenticationToken;
-@property (nonatomic, retain) NSDate *expiry;
-@property (nonatomic, retain) NSString *permissions;
+@property (nonatomic, strong) NSString *authenticationToken;
+@property (nonatomic, strong) NSDate *expiry;
+@property (nonatomic, strong) NSString *permissions;
 
 - (id) initWithToken: (NSString*) token secondsToExpiry: (NSTimeInterval) seconds permissions: (NSString*) perms;
 

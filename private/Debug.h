@@ -9,7 +9,7 @@
 //
 
 #ifdef DEBUG
-    #define DebugLog(format, ...) CFShow([NSString stringWithFormat:format, ## __VA_ARGS__])
+	#define DebugLog(format, ...) NSLog(@"%@",[NSString stringWithFormat:format, ## __VA_ARGS__])
 #else
     #define DebugLog(format, ...)
 #endif                     

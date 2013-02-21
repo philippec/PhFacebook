@@ -21,6 +21,7 @@
 #pragma mark Initialization
 
 - (id) initWithApplicationID:(NSString *)appID {
+	// forward the initialization with a nil-delegate
 	return [self initWithApplicationID:appID delegate:nil];
 }
 - (id) initWithApplicationID: (NSString*) appID delegate: (id) delegate
@@ -48,10 +49,11 @@
         // Save it to user defaults
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setObject: token.authenticationToken forKey: kFBStoreAccessToken];
-        if (token.expiry)
+        if (token.expiry) {
             [defaults setObject: token.expiry forKey: kFBStoreTokenExpiry];
-        else
+        } else {
             [defaults removeObjectForKey: kFBStoreTokenExpiry];
+		}
         [defaults setObject: token.permissions forKey: kFBStoreAccessPermissions];
 
         [result setObject: [NSNumber numberWithBool: YES] forKey: @"valid"];
@@ -62,6 +64,7 @@
         [result setObject: errorReason forKey: @"error"];
     }
 
+	/** Execute the completion block, if block is not nil. The block is either a custom completion block or contains the actions to notify the delegate. */
 	if (block) {
 		block(result);
 	}
@@ -103,6 +106,7 @@
 
 - (void) getAccessTokenForPermissions:(NSArray *)permissions cached:(BOOL)canCache {
 	NSCAssert(_delegate!=nil, @"Trying to get access token with no delegate set.");
+	// Since no completion block is being used, define a completion block that notifies the delegate instead and forward the method call to the equivalent WITH completion block.
 	PhCompletionBlock block = ^(NSDictionary *result){
 		if ([_delegate respondsToSelector: @selector(tokenResult:)])
 			[_delegate tokenResult: result];
@@ -137,6 +141,7 @@
 
     if (validToken)
     {
+		// Run completion block, that is, run custom code or the actions to notify the delegate.
         [self notifyDelegateForToken: _authToken withError: nil withCompletionBlock:block];
     }
     else
@@ -176,7 +181,7 @@
 }
 
 - (void) setAccessToken:(NSString *)accessToken expires:(NSTimeInterval)tokenExpires permissions:(NSString *)perms error:(NSString *)errorReason {
-	// Delegate will be notified, instead of executing a certain completion block
+	// Since no completion block is being used, define a completion block that notifies the delegate instead and forward the method call to the equivalent WITH completion block.
 	PhCompletionBlock block = ^(NSDictionary *result){
 		if ([_delegate respondsToSelector: @selector(tokenResult:)])
 			[_delegate tokenResult: result];
@@ -210,6 +215,7 @@
 	NSMutableDictionary *allParams = [NSMutableDictionary dictionaryWithDictionary:@{
 										@"query" : query,
 									 }];
+	// Add the completion block, if specified
 	if (block != nil)
 		[allParams setObject: [block copy] forKey:@"completionBlock"];
 	
@@ -223,11 +229,13 @@
 - (void) sendRequest: (NSString*) request
 {
  	NSCAssert(_delegate!=nil, @"Trying to send request with no delegate set.");
-   [self sendRequest: request params: nil usePostRequest: NO];
+	// Forward the call with a nil-completion block
+	[self sendRequest: request withCompletionBlock:nil];
 }
 
 /** Send a simple GET request, execute the specified completion handler block once the result is available. */
 - (void) sendRequest:(NSString *)request withCompletionBlock:(PhCompletionBlock)block {
+	// Forward the call
     [self sendRequest: request params: nil usePostRequest: NO withCompletionBlock:block];
 }
 
@@ -246,6 +254,7 @@
 
     if (params != nil)
         [allParams setObject: params forKey: @"params"];
+
 	if (block != nil)
 		[allParams setObject: [block copy] forKey:@"completionBlock"];
 
@@ -259,70 +268,69 @@
 
 - (void) sendFacebookRequest: (NSDictionary*) allParams
 {
-    @autoreleasepool {
 
-        if (_authToken)
-        {
+	if (_authToken)
+	{
 		PhCompletionBlock block = [allParams objectForKey:@"completionBlock"];
-            NSString *request = [allParams objectForKey: @"request"];
-            NSString *str;
-            BOOL postRequest = [[allParams objectForKey: @"postRequest"] boolValue];
+		NSString *request = [allParams objectForKey: @"request"];
+		NSString *str;
+		BOOL postRequest = [[allParams objectForKey: @"postRequest"] boolValue];
 
-            if (postRequest)
-            {
-                str = [NSString stringWithFormat: kFBGraphApiPostURL, request];
-            }
-            else
-            {
-                // Check if request already has optional parameters
-                NSString *formatStr = kFBGraphApiGetURL;
-                NSRange rng = [request rangeOfString:@"?"];
-                if (rng.length > 0)
-                    formatStr = kFBGraphApiGetURLWithParams;
-                str = [NSString stringWithFormat: formatStr, request, _authToken.authenticationToken];
-            }
+		if (postRequest)
+		{
+			str = [NSString stringWithFormat: kFBGraphApiPostURL, request];
+		}
+		else
+		{
+			// Check if request already has optional parameters
+			NSString *formatStr = kFBGraphApiGetURL;
+			NSRange rng = [request rangeOfString:@"?"];
+			if (rng.length > 0)
+				formatStr = kFBGraphApiGetURLWithParams;
+			str = [NSString stringWithFormat: formatStr, request, _authToken.authenticationToken];
+		}
 
 
-            NSDictionary *params = [allParams objectForKey: @"params"];
-            NSMutableString *strPostParams = nil;
-            if (params != nil)
-            {
-                if (postRequest)
-                {
-                    strPostParams = [NSMutableString stringWithFormat: @"access_token=%@", _authToken.authenticationToken];
-                    for (NSString *p in [params allKeys])
-                        [strPostParams appendFormat: @"&%@=%@", p, [params objectForKey: p]];
-                }
-                else
-                {
-                    NSMutableString *strWithParams = [NSMutableString stringWithString: str];
-                    for (NSString *p in [params allKeys])
-                        [strWithParams appendFormat: @"&%@=%@", p, [params objectForKey: p]];
-                    str = strWithParams;
-                }
-            }
+		NSDictionary *params = [allParams objectForKey: @"params"];
+		NSMutableString *strPostParams = nil;
+		if (params != nil)
+		{
+			if (postRequest)
+			{
+				strPostParams = [NSMutableString stringWithFormat: @"access_token=%@", _authToken.authenticationToken];
+				for (NSString *p in [params allKeys])
+					[strPostParams appendFormat: @"&%@=%@", p, [params objectForKey: p]];
+			}
+			else
+			{
+				NSMutableString *strWithParams = [NSMutableString stringWithString: str];
+				for (NSString *p in [params allKeys])
+					[strWithParams appendFormat: @"&%@=%@", p, [params objectForKey: p]];
+				str = strWithParams;
+			}
+		}
 
-            NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL: [NSURL URLWithString: str]];
+		NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL: [NSURL URLWithString: str]];
 
-            if (postRequest)
-            {
-                NSData *requestData = [NSData dataWithBytes: [strPostParams UTF8String] length: [strPostParams length]];
-                [req setHTTPMethod: @"POST"];
-                [req setHTTPBody: requestData];
-                [req setValue: @"application/x-www-form-urlencoded" forHTTPHeaderField: @"content-type"];
-            }
+		if (postRequest)
+		{
+			NSData *requestData = [NSData dataWithBytes: [strPostParams UTF8String] length: [strPostParams length]];
+			[req setHTTPMethod: @"POST"];
+			[req setHTTPBody: requestData];
+			[req setValue: @"application/x-www-form-urlencoded" forHTTPHeaderField: @"content-type"];
+		}
 
-            NSURLResponse *response = nil;
-            NSError *error = nil;
-            NSData *data = [NSURLConnection sendSynchronousRequest: req returningResponse: &response error: &error];
+		NSURLResponse *response = nil;
+		NSError *error = nil;
+		NSData *data = [NSURLConnection sendSynchronousRequest: req returningResponse: &response error: &error];
 
 		NSString *resultStr = [[NSString alloc] initWithBytesNoCopy: (void*)[data bytes] length: [data length] encoding:NSASCIIStringEncoding freeWhenDone: NO];
 
 		NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:
-								resultStr, @"result",
-								request, @"request",
-								data, @"raw",
-								self, @"sender",
+									resultStr, @"result",
+									request, @"request",
+									data, @"raw",
+									self, @"sender",
 								nil];
 
 		// Execute completion block if available, notify delegate otherwise
@@ -333,16 +341,13 @@
 				[_delegate performSelectorOnMainThread:@selector(requestResult:) withObject: result waitUntilDone:YES];
 			}
 		}
-        }
-    }
+	}
 }
 
 - (void) sendFacebookFQLRequest: (NSDictionary*) allParams
 {
-	@autoreleasepool {
-
-		NSString *query = [allParams objectForKey:@"query"];
-		PhCompletionBlock block = [allParams objectForKey:@"completionBlock"];
+	NSString *query = [allParams objectForKey:@"query"];
+	PhCompletionBlock block = [allParams objectForKey:@"completionBlock"];
 
     if (_authToken)
     {
@@ -354,24 +359,23 @@
         NSError *error = nil;
         NSData *data = [NSURLConnection sendSynchronousRequest: req returningResponse: &response error: &error];
 
-			NSString *resultStr = [[NSString alloc] initWithBytesNoCopy: (void*)[data bytes] length: [data length] encoding:NSASCIIStringEncoding freeWhenDone: NO];
-			NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:
-									resultStr, @"result",
-									query, @"request",
-									data, @"raw",
-									self, @"sender",
-									nil];
+		NSString *resultStr = [[NSString alloc] initWithBytesNoCopy: (void*)[data bytes] length: [data length] encoding:NSASCIIStringEncoding freeWhenDone: NO];
+		NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:
+								resultStr, @"result",
+								query, @"request",
+								data, @"raw",
+								self, @"sender",
+								nil];
 
-			// Execute completion block if available, notify delegate otherwise
-			if (block != nil) {
-				block(result);
-			} else {
-				if ([_delegate respondsToSelector: @selector(requestResult:)])
-				{
-					[_delegate performSelectorOnMainThread:@selector(requestResult:) withObject: result waitUntilDone:YES];
-				}
+		// Execute completion block if available, notify delegate otherwise
+		if (block != nil) {
+			block(result);
+		} else {
+			if ([_delegate respondsToSelector: @selector(requestResult:)])
+			{
+				[_delegate performSelectorOnMainThread:@selector(requestResult:) withObject: result waitUntilDone:YES];
 			}
-    }
+		}
     }
 }
 

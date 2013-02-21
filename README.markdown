@@ -3,17 +3,30 @@ PhFacebook: easy-to-use MacOSX framework for the Facebook API
 
 Changes in this fork
 --------------------
-- added german translations
+
 - added Completion blocks for both token retrieval and requests
 - added ARC compatibility
+- added german translations
 
 Example with completion blocks:
 
-	fb = [[PhFacebook alloc] initWithApplicationID:@"XXXXXXXXX"];
+/** Working with Completion Blocks: If you do not specify a delegate, you have to handle both the access token retrieval and the request results by using completion blocks, that receive the same kind of NSDictionary as the delegate would. The following example illustrates how the usage of completion blocks could look like:
+	 */
+
+	// creating the instance without specifying a delegate
+	fb = [[PhFacebook alloc] initWithApplicationID:@"143968452428252"];
+
+	// try to get an access token and handle the result within a completion block
 	[fb getAccessTokenForPermissions:@[@"publish_actions"] cached:NO withCompletionBlock:^(NSDictionary *result) {
+
+		// here you can process the result and check if it is valid, etc.
+
+		// send a request to the Graph API
 		[fb sendRequest:@"/me" withCompletionBlock:^(NSDictionary *result) {
 			NSLog(@"Got /me result: %@", result);
 		}];
+
+		// send a FQL request
 		[fb sendFQLRequest:@"SELECT uid, sex, name from user WHERE uid = me()" withCompletionBlock:^(NSDictionary *result) {
 			NSLog(@"Got FQL result: %@", result);
 		}];

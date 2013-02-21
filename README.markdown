@@ -10,8 +10,8 @@ Changes in this fork
 
 Example with completion blocks:
 
-/** Working with Completion Blocks: If you do not specify a delegate, you have to handle both the access token retrieval and the request results by using completion blocks, that receive the same kind of NSDictionary as the delegate would. The following example illustrates how the usage of completion blocks could look like:
-	 */
+``` smalltalk
+	/** Working with Completion Blocks: If you do not specify a delegate, you have to handle both the access token retrieval and the request results by using completion blocks, that receive the same kind of NSDictionary as the delegate would. The following example illustrates how the usage of completion blocks could look like: */
 
 	// creating the instance without specifying a delegate
 	fb = [[PhFacebook alloc] initWithApplicationID:@"143968452428252"];
@@ -31,6 +31,7 @@ Example with completion blocks:
 			NSLog(@"Got FQL result: %@", result);
 		}];
 	}];
+```
 
 Summary
 -------

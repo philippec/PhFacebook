@@ -106,7 +106,7 @@
     if ([url hasPrefix: @"https://"])
         urlWithoutSchema = [url substringFromIndex: [@"https://" length]];
     
-    NSString *loginSuccessURLWithoutSchema = [kFBLoginSuccessURL substringFromIndex: 7];
+    NSString *loginSuccessURLWithoutSchema = [kFBLoginSuccessURL substringFromIndex: 8];
     NSComparisonResult res = [urlWithoutSchema compare: loginSuccessURLWithoutSchema options: NSCaseInsensitiveSearch range: NSMakeRange(0, [loginSuccessURLWithoutSchema length])];
     if (res == NSOrderedSame)
     {

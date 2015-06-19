@@ -19,13 +19,23 @@
 {
     if ((self = [super init]))
     {
-        self.authenticationToken = token;
+        _authenticationToken = [token copy];
         if (seconds != 0)
-            self.expiry = [NSDate dateWithTimeIntervalSinceNow: seconds];
-        self.permissions = perms;
+        {
+            _expiry = [NSDate dateWithTimeIntervalSinceNow: seconds];
+        }
+        _permissions = [perms copy];
     }
 
     return self;
+}
+
+- (void) dealloc
+{
+    [_authenticationToken release];
+    [_expiry release];
+    [_permissions release];
+    [super dealloc];
 }
 
 @end

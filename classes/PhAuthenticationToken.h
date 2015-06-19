@@ -11,14 +11,15 @@
 
 @interface PhAuthenticationToken : NSObject
 {
+@private
     NSString *_authenticationToken;
     NSDate *_expiry;
     NSString *_permissions;
 }
 
-@property (nonatomic, retain) NSString *authenticationToken;
-@property (nonatomic, retain) NSDate *expiry;
-@property (nonatomic, retain) NSString *permissions;
+@property (nonatomic, readonly) NSString *authenticationToken;
+@property (nonatomic, readonly) NSDate *expiry;
+@property (nonatomic, readonly) NSString *permissions;
 
 - (id) initWithToken: (NSString*) token secondsToExpiry: (NSTimeInterval) seconds permissions: (NSString*) perms;
 

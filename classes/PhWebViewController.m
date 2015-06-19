@@ -15,23 +15,16 @@
 
 @implementation PhWebViewController
 
-@synthesize window;
-@synthesize webView;
-@synthesize cancelButton;
-@synthesize parent;
-@synthesize permissions;
-
-- (id) init
-{
-    if ((self = [super init]))
-    {
-    }
-
-    return self;
-}
+@synthesize window=_window;
+@synthesize webView=_webView;
+@synthesize cancelButton=_cancelButton;
+@synthesize parent=_parent;
+@synthesize permissions=_permissions;
 
 - (void) dealloc
 {
+    _parent = nil;
+    [_permissions release];
     [super dealloc];
 }
 
@@ -67,12 +60,16 @@
 
     NSString *urlWithoutSchema = [url substringFromIndex: [@"http://" length]];
     if ([url hasPrefix: @"https://"])
+    {
         urlWithoutSchema = [url substringFromIndex: [@"https://" length]];
+    }
     
     NSString *uiServerURLWithoutSchema = [kFBUIServerURL substringFromIndex: [@"http://" length]];
     NSComparisonResult res = [urlWithoutSchema compare: uiServerURLWithoutSchema options: NSCaseInsensitiveSearch range: NSMakeRange(0, [uiServerURLWithoutSchema length])];
     if (res == NSOrderedSame)
+    {
         [self showUI];
+    }
 
 #ifdef ALWAYS_SHOW_UI
     [self showUI];
@@ -90,7 +87,9 @@
         NSRange searchRange = NSMakeRange(paramNameRange.location + paramNameRange.length, [url length] - (paramNameRange.location + paramNameRange.length));
         NSRange ampRange = [url rangeOfString: @"&" options: NSCaseInsensitiveSearch range: searchRange];
         if (ampRange.location == NSNotFound)
+        {
             ampRange.location = [url length];
+        }
         res = [url substringWithRange: NSMakeRange(searchRange.location, ampRange.location - searchRange.location)];
     }
 
@@ -104,7 +103,9 @@
 
     NSString *urlWithoutSchema = [url substringFromIndex: [@"http://" length]];
     if ([url hasPrefix: @"https://"])
+    {
         urlWithoutSchema = [url substringFromIndex: [@"https://" length]];
+    }
     
     NSString *loginSuccessURLWithoutSchema = [kFBLoginSuccessURL substringFromIndex: 8];
     NSComparisonResult res = [urlWithoutSchema compare: loginSuccessURLWithoutSchema options: NSCaseInsensitiveSearch range: NSMakeRange(0, [loginSuccessURLWithoutSchema length])];
@@ -116,7 +117,7 @@
 
         [self.window orderOut: self];
 
-        [parent setAccessToken: accessToken expires: [tokenExpires floatValue] permissions: self.permissions error: errorReason];
+        [self.parent setAccessToken: accessToken expires: [tokenExpires floatValue] permissions: self.permissions error: errorReason];
     }
     else
     {
@@ -131,7 +132,7 @@
 
 - (IBAction) cancel: (id) sender
 {
-    [parent performSelector: @selector(didDismissUI)];
+    [self.parent performSelector: @selector(didDismissUI)];
     [self.window orderOut: nil];
 }
 

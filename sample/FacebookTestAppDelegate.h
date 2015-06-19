@@ -11,15 +11,16 @@
 
 @interface FacebookTestAppDelegate : NSObject <PhFacebookDelegate>
 {
-    PhFacebook *fb;
+@private
+    PhFacebook *_fb;
 
-    NSTextField *token_label;
-    NSTextField *request_label;
-    NSTextField *request_text;
-    NSTextView *result_text;
-    NSImageView *profile_picture;
-    NSButton *send_request;
-    NSWindow *window;
+    NSTextField *_token_label;
+    NSTextField *_request_label;
+    NSTextField *_request_text;
+    NSTextView *_result_text;
+    NSImageView *_profile_picture;
+    NSButton *_send_request;
+    NSWindow *_window;
 }
 
 @property (assign) IBOutlet NSTextField *token_label;

@@ -9,19 +9,24 @@
 #import "FacebookTestAppDelegate.h"
 #import "ApplicationID.h"
 
+@interface FacebookTestAppDelegate()
+@property (nonatomic, retain) PhFacebook *fb;
+@end
+
 @implementation FacebookTestAppDelegate
 
-@synthesize token_label;
-@synthesize request_label;
-@synthesize request_text;
-@synthesize result_text;
-@synthesize profile_picture;
-@synthesize send_request;
-@synthesize window;
+@synthesize fb=_fb;
+@synthesize token_label=_token_label;
+@synthesize request_label=_request_label;
+@synthesize request_text=_request_text;
+@synthesize result_text=_result_text;
+@synthesize profile_picture=_profile_picture;
+@synthesize send_request=_send_request;
+@synthesize window=_window;
 
 - (void) applicationDidFinishLaunching: (NSNotification*) aNotification
 {
-    fb = [[PhFacebook alloc] initWithApplicationID: APPLICATION_ID delegate: self];
+    self.fb = [[[PhFacebook alloc] initWithApplicationID: APPLICATION_ID delegate: self] autorelease];
     self.token_label.stringValue = @"Invalid";
     [self.request_label setEnabled: NO];
     [self.request_text setEnabled: NO];
@@ -35,13 +40,13 @@
 - (IBAction) getAccessToken: (id) sender
 {
     // Always get a new token, don't get a cached one
-    [fb getAccessTokenForPermissions: [NSArray arrayWithObjects: @"read_stream", @"export_stream", nil] cached: NO];
+    [self.fb getAccessTokenForPermissions: [NSArray arrayWithObjects: @"read_stream", @"export_stream", nil] cached: NO];
 }
 
 - (IBAction) sendRequest: (id) sender
 {
     [self.send_request setEnabled: NO];
-    [fb sendRequest: request_text.stringValue];
+    [self.fb sendRequest: self.request_text.stringValue];
 }
 
 #pragma mark PhFacebookDelegate methods
@@ -55,7 +60,7 @@
         [self.request_text setEnabled: YES];
         [self.send_request setEnabled: YES];
         [self.result_text setEditable: YES];
-        [fb sendRequest: @"me/picture"];
+        [self.fb sendRequest: @"me/picture"];
     }
     else
     {

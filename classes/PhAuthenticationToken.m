@@ -22,7 +22,7 @@
         _authenticationToken = [token copy];
         if (seconds != 0)
         {
-            _expiry = [NSDate dateWithTimeIntervalSinceNow: seconds];
+            _expiry = [[NSDate dateWithTimeIntervalSinceNow: seconds] retain];
         }
         _permissions = [perms copy];
     }
